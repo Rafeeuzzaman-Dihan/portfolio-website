@@ -1,0 +1,20 @@
+{
+  "name": "Rafeeuzzaman Dihan",
+  "shortName": "Dihan",
+  "roles": [
+    "Full-Stack Developer",
+    "Backend Engineer",
+    "Problem Solver",
+    "NestJS & Nuxt Enthusiast"
+  ],
+  "bio": "I build fast, reliable web applications end-to-end — from NestJS APIs and database schemas to polished Vue and Nuxt front ends. I care about clean architecture, thoughtful UX, and shipping things that hold up in production.",
+  "email": "hello@dihan.dev",
+  "location": "Dhaka, Bangladesh",
+  "resumeUrl": "/resume.pdf",
+  "socials": [
+    { "platform": "GitHub", "url": "https://github.com/dihan", "icon": "github" },
+    { "platform": "LinkedIn", "url": "https://linkedin.com/in/dihan", "icon": "linkedin" },
+    { "platform": "Twitter", "url": "https://twitter.com/dihan", "icon": "twitter" },
+    { "platform": "Email", "url": "mailto:hello@dihan.dev", "icon": "mail" }
+  ]
+}

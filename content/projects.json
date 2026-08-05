@@ -1,0 +1,47 @@
+[
+  {
+    "title": "Verona — Ecommerce Platform",
+    "description": "A full-featured storefront and admin dashboard with cart, checkout, and inventory management, built on a NestJS API and a Nuxt front end.",
+    "image": "/images/projects/verona.jpg",
+    "tech": ["Nuxt", "NestJS", "PostgreSQL", "Stripe", "Tailwind CSS"],
+    "liveUrl": "https://verona-demo.example.com",
+    "githubUrl": "https://github.com/dihan/verona-ecommerce",
+    "category": "Full Stack"
+  },
+  {
+    "title": "TaskFlow API",
+    "description": "A multi-tenant project management API with role-based access control, webhooks, and rate limiting, documented with OpenAPI.",
+    "image": "/images/projects/taskflow.jpg",
+    "tech": ["NestJS", "PostgreSQL", "Redis", "Docker"],
+    "liveUrl": "https://taskflow-api-docs.example.com",
+    "githubUrl": "https://github.com/dihan/taskflow-api",
+    "category": "API"
+  },
+  {
+    "title": "PulseBoard Analytics",
+    "description": "A real-time analytics dashboard with live charts and alerting, built with Vue and PrimeVue components on a WebSocket data feed.",
+    "image": "/images/projects/pulseboard.jpg",
+    "tech": ["Vue", "PrimeVue", "WebSockets", "Chart.js"],
+    "liveUrl": "https://pulseboard.example.com",
+    "githubUrl": "https://github.com/dihan/pulseboard-analytics",
+    "category": "Web App"
+  },
+  {
+    "title": "Nimbus Booking System",
+    "description": "An appointment scheduling platform with calendar sync, automated reminders, and a customer-facing booking widget.",
+    "image": "/images/projects/nimbus.jpg",
+    "tech": ["Nuxt", "NestJS", "MongoDB", "Tailwind CSS"],
+    "liveUrl": "https://nimbus-booking.example.com",
+    "githubUrl": "https://github.com/dihan/nimbus-booking",
+    "category": "Full Stack"
+  },
+  {
+    "title": "DevLog CLI",
+    "description": "A command-line tool for developers to log daily progress and generate weekly standup summaries from git history.",
+    "image": "/images/projects/devlog.jpg",
+    "tech": ["Node.js", "TypeScript", "SQLite"],
+    "liveUrl": "",
+    "githubUrl": "https://github.com/dihan/devlog-cli",
+    "category": "Tool"
+  }
+]

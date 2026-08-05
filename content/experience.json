@@ -1,0 +1,26 @@
+[
+  {
+    "company": "Nova Digital Solutions",
+    "role": "Full-Stack Developer",
+    "startDate": "2023-06",
+    "endDate": "Present",
+    "description": "Leading development of client web platforms using NestJS and Nuxt, from API design through deployment. Introduced a shared component library that cut new-feature turnaround time significantly.",
+    "tech": ["NestJS", "Nuxt", "PostgreSQL", "Docker", "Tailwind CSS"]
+  },
+  {
+    "company": "Brightpath Tech",
+    "role": "Backend Engineer",
+    "startDate": "2021-09",
+    "endDate": "2023-05",
+    "description": "Built and maintained REST APIs powering an ecommerce platform serving thousands of daily users, focusing on payment integrations, order workflows, and performance tuning.",
+    "tech": ["Node.js", "Express", "MySQL", "Redis", "AWS"]
+  },
+  {
+    "company": "Freelance",
+    "role": "Web Developer",
+    "startDate": "2020-01",
+    "endDate": "2021-08",
+    "description": "Delivered custom websites and internal tools for small businesses, handling everything from requirements gathering to launch and ongoing support.",
+    "tech": ["Vue", "Laravel", "MySQL", "Bootstrap"]
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "icon": "server",
+    "title": "Backend Architecture",
+    "description": "Designing scalable NestJS APIs with clean module boundaries, robust auth, and database schemas that hold up as products grow."
+  },
+  {
+    "icon": "layout",
+    "title": "Frontend Engineering",
+    "description": "Building responsive, accessible interfaces with Vue, Nuxt, and Tailwind that feel fast and stay maintainable."
+  },
+  {
+    "icon": "database",
+    "title": "Database Design",
+    "description": "Modeling relational and document data for performance and integrity, from schema design to query optimization."
+  },
+  {
+    "icon": "rocket",
+    "title": "Deployment & DevOps",
+    "description": "Shipping with confidence using Docker, CI/CD pipelines, and cloud infrastructure that keeps apps reliable in production."
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Sarah Chen",
+    "role": "Product Manager, Nova Digital Solutions",
+    "quote": "Dihan turned a vague set of requirements into a polished, production-ready platform faster than we expected. His communication throughout the project made planning painless.",
+    "avatar": "/images/testimonials/sarah-chen.jpg"
+  },
+  {
+    "name": "Marcus Webb",
+    "role": "Founder, Brightpath Tech",
+    "quote": "The API work Dihan delivered was rock solid — well tested, well documented, and it barely needed any changes once it hit production.",
+    "avatar": "/images/testimonials/marcus-webb.jpg"
+  },
+  {
+    "name": "Priya Nair",
+    "role": "CTO, Verona Retail",
+    "quote": "He doesn't just write code, he thinks about the product. Several of his suggestions during the ecommerce build ended up shaping our roadmap.",
+    "avatar": "/images/testimonials/priya-nair.jpg"
+  },
+  {
+    "name": "Tom Reyes",
+    "role": "Independent Client",
+    "quote": "Responsive, thorough, and easy to work with. My booking site has run without a single hiccup since launch.",
+    "avatar": ""
+  }
+]

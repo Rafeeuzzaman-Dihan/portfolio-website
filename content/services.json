@@ -1,0 +1,26 @@
+[
+  {
+    "number": "01",
+    "icon": "code",
+    "title": "Web Application Development",
+    "description": "End-to-end builds using Nuxt and NestJS, from architecture and data modeling to a polished, responsive UI."
+  },
+  {
+    "number": "02",
+    "icon": "server",
+    "title": "API Design & Integration",
+    "description": "Well-documented REST APIs with secure auth, third-party integrations (payments, email, storage), and clean versioning."
+  },
+  {
+    "number": "03",
+    "icon": "refresh-cw",
+    "title": "Legacy System Modernization",
+    "description": "Migrating aging codebases to modern frameworks and typed languages without disrupting the business behind them."
+  },
+  {
+    "number": "04",
+    "icon": "life-buoy",
+    "title": "Ongoing Maintenance & Support",
+    "description": "Bug fixes, performance tuning, and incremental feature work to keep an existing product healthy and evolving."
+  }
+]

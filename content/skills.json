@@ -1,0 +1,18 @@
+[
+  {
+    "category": "Languages",
+    "skills": ["TypeScript", "JavaScript", "PHP", "SQL", "HTML5", "CSS3"]
+  },
+  {
+    "category": "Frameworks",
+    "skills": ["NestJS", "Vue", "Nuxt", "Express", "Laravel", "PrimeVue"]
+  },
+  {
+    "category": "Cloud & Databases",
+    "skills": ["PostgreSQL", "MySQL", "MongoDB", "Redis", "AWS", "Docker"]
+  },
+  {
+    "category": "Tools & Design",
+    "skills": ["Tailwind CSS", "Figma", "Git", "GitHub Actions", "Postman", "Vite"]
+  }
+]
