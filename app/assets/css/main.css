@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-bg: #0a0e14;
+  --color-bg-elevated: #10151f;
+  --color-primary: #3b82f6;
+  --color-primary-light: #60a5fa;
+  --color-secondary: #8b98b8;
+  --color-text: #e6e9f0;
+  --color-text-muted: #9aa3b8;
+  --color-border: rgb(139 152 184 / 15%);
+
+  /* Fonts */
+  --font-heading: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+/* Consistent max-width + horizontal padding for every section, mobile-first. */
+@utility section-container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+
+  @media (width >= 48rem) {
+    padding-inline: 2rem;
+  }
+
+  @media (width >= 64rem) {
+    max-width: 72rem;
+    padding-inline: 3rem;
+  }
+
+  @media (width >= 80rem) {
+    max-width: 80rem;
+    padding-inline: 4rem;
+  }
+}
+
+/* Subtle dot-grid texture. Apply to an absolutely-positioned full-bleed layer. */
+@utility bg-dot-grid {
+  background-image: radial-gradient(circle, var(--color-secondary) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.08;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+}
+
+/* Faint blueprint/linework grid texture. Apply to an absolutely-positioned full-bleed layer. */
+@utility bg-blueprint {
+  background-image:
+    linear-gradient(to right, var(--color-secondary) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-secondary) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.06;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+}
