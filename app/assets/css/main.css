@@ -16,6 +16,13 @@
   --font-body: "Inter", sans-serif;
 }
 
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+}
+
 /* Consistent max-width + horizontal padding for every section, mobile-first. */
 @utility section-container {
   width: 100%;
