@@ -25,29 +25,11 @@
         <SectionsServicesSection />
       </section>
 
-      <section
-        v-for="placeholder in placeholders"
-        :id="placeholder.id"
-        :key="placeholder.id"
-        class="relative flex min-h-[60vh] scroll-mt-20 items-center border-t border-(--color-border)"
-      >
-        <div class="section-container">
-          <h2 class="font-heading text-2xl font-bold text-(--color-text) sm:text-3xl">
-            {{ placeholder.label }}
-          </h2>
-          <p class="mt-2 text-(--color-text-muted)">
-            Content for this section arrives in a later phase.
-          </p>
-        </div>
+      <section id="contact" class="relative border-t border-(--color-border)">
+        <SectionsContactSection />
       </section>
     </main>
 
     <LayoutAppFooter />
   </div>
 </template>
-
-<script setup lang="ts">
-const placeholders = [
-  { id: 'contact', label: 'Contact' }
-]
-</script>

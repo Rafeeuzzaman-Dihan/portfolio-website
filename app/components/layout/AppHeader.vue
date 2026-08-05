@@ -1,12 +1,5 @@
 <script setup lang="ts">
-const links = [
-  { href: '#home', label: 'Home' },
-  { href: '#expertise', label: 'Expertise' },
-  { href: '#experience', label: 'Experience' },
-  { href: '#projects', label: 'Projects' },
-  { href: '#services', label: 'Services' },
-  { href: '#contact', label: 'Contact' }
-]
+const links = useNavLinks()
 
 const isRevealed = ref(false)
 const isMobileMenuOpen = ref(false)
