@@ -5,16 +5,8 @@
     <LayoutAppHeader />
 
     <main>
-      <section id="home" class="relative overflow-hidden">
-        <BackgroundsDotGridBackground />
-        <div class="section-container relative flex min-h-screen flex-col justify-center py-16">
-          <h1 class="font-heading text-3xl font-bold text-(--color-primary) sm:text-4xl">
-            Portfolio
-          </h1>
-          <p class="mt-2 text-(--color-text-muted)">
-            Nuxt 4 + Tailwind CSS 4 scaffold ready.
-          </p>
-        </div>
+      <section id="home">
+        <SectionsHeroSection />
       </section>
 
       <section
