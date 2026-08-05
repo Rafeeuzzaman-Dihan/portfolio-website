@@ -9,6 +9,14 @@
         <SectionsHeroSection />
       </section>
 
+      <section id="expertise" class="relative border-t border-(--color-border)">
+        <SectionsExpertiseSection />
+      </section>
+
+      <section id="experience" class="relative border-t border-(--color-border)">
+        <SectionsExperienceSection />
+      </section>
+
       <section
         v-for="placeholder in placeholders"
         :id="placeholder.id"
@@ -32,8 +40,6 @@
 
 <script setup lang="ts">
 const placeholders = [
-  { id: 'expertise', label: 'Expertise' },
-  { id: 'experience', label: 'Experience' },
   { id: 'projects', label: 'Projects' },
   { id: 'services', label: 'Services' },
   { id: 'contact', label: 'Contact' }
