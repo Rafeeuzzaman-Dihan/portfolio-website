@@ -21,6 +21,10 @@
         <SectionsProjectsSection />
       </section>
 
+      <section id="services" class="relative border-t border-(--color-border)">
+        <SectionsServicesSection />
+      </section>
+
       <section
         v-for="placeholder in placeholders"
         :id="placeholder.id"
@@ -44,7 +48,6 @@
 
 <script setup lang="ts">
 const placeholders = [
-  { id: 'services', label: 'Services' },
   { id: 'contact', label: 'Contact' }
 ]
 </script>
