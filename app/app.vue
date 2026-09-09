@@ -1,6 +1,7 @@
 <template>
   <div class="min-h-screen bg-(--color-bg) font-body text-(--color-text)">
     <NuxtRouteAnnouncer />
+    <CustomCursor />
 
     <LayoutAppHeader />
 

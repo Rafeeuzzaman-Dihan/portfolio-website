@@ -50,6 +50,8 @@ const { currentWord } = useRotatingText(profile.roles, 2200)
           Contact Me
         </a>
       </div>
+
+      <ScrollIndicator target="#expertise" class="self-center mt-10 sm:mt-12 lg:mt-16" />
     </div>
   </div>
 </template>
