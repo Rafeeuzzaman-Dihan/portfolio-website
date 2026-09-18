@@ -1,122 +1,237 @@
 <script setup lang="ts">
+import { nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import profile from '~~/content/profile.json'
+
 const links = useNavLinks()
+const sectionIds = links.map((link) => link.href.replace('#', ''))
 
-const isRevealed = ref(false)
-const isMobileMenuOpen = ref(false)
+const active = ref(0)
+const progress = ref(0)
+const isMenuOpen = ref(false)
 
-let observer: IntersectionObserver | undefined
+const rootRef = ref<HTMLElement | null>(null)
+const listRef = ref<HTMLElement | null>(null)
+const highlight = reactive({ x: 0, w: 0, ready: false })
 
-onMounted(() => {
-  const hero = document.getElementById('home')
+let ticking = false
+let resizeObserver: ResizeObserver | undefined
 
-  if (!hero) {
-    isRevealed.value = true
-    return
-  }
+// Scroll-spy + progress: the active link is the last section whose top has passed 35% of the viewport.
+function update() {
+  ticking = false
+  const y = window.scrollY
+  const max = document.documentElement.scrollHeight - window.innerHeight
+  progress.value = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0
 
-  observer = new IntersectionObserver(
-    ([entry]) => {
-      isRevealed.value = !entry.isIntersecting
-    },
-    { threshold: 0, rootMargin: '-72px 0px 0px 0px' }
-  )
-  observer.observe(hero)
-})
-
-onUnmounted(() => {
-  observer?.disconnect()
-})
-
-function closeMobileMenu() {
-  isMobileMenuOpen.value = false
+  const line = window.innerHeight * 0.35
+  let index = 0
+  sectionIds.forEach((id, i) => {
+    const el = document.getElementById(id)
+    if (el && el.getBoundingClientRect().top <= line) index = i
+  })
+  if (max > 0 && y >= max - 4) index = sectionIds.length - 1
+  active.value = index
 }
+
+function onScroll() {
+  if (ticking) return
+  ticking = true
+  requestAnimationFrame(update)
+}
+
+// The sliding highlight follows the real width of each link, so it stays exact whatever the font does.
+function measure() {
+  const item = listRef.value?.children[active.value] as HTMLElement | undefined
+  if (!item) return
+  highlight.x = item.offsetLeft
+  highlight.w = item.offsetWidth
+}
+
+function closeMenu() {
+  isMenuOpen.value = false
+}
+
+function onKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape') closeMenu()
+}
+
+function onDocumentClick(e: MouseEvent) {
+  if (isMenuOpen.value && rootRef.value && !rootRef.value.contains(e.target as Node)) closeMenu()
+}
+
+watch(active, () => nextTick(measure))
+
+onMounted(async () => {
+  update()
+  window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('resize', onScroll, { passive: true })
+  window.addEventListener('keydown', onKeydown)
+  document.addEventListener('click', onDocumentClick)
+
+  await nextTick()
+  measure()
+  if (listRef.value) {
+    resizeObserver = new ResizeObserver(measure)
+    resizeObserver.observe(listRef.value)
+  }
+  document.fonts?.ready.then(measure)
+  // Enable the slide transition only after the first placement, so it doesn't fly in from the left.
+  requestAnimationFrame(() => {
+    highlight.ready = true
+  })
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('resize', onScroll)
+  window.removeEventListener('keydown', onKeydown)
+  document.removeEventListener('click', onDocumentClick)
+  resizeObserver?.disconnect()
+})
 </script>
 
 <template>
-  <header
-    class="fixed inset-x-0 top-0 z-50 transition-colors duration-300"
-    :class="isRevealed
-      ? 'border-b border-(--color-border) bg-(--color-bg)/80 backdrop-blur-md'
-      : 'border-b border-transparent bg-transparent'"
-  >
-    <nav class="section-container flex h-16 items-center justify-between sm:h-18">
-      <a
-        href="#home"
-        class="font-heading text-lg font-bold tracking-tight text-(--color-text) transition-colors hover:text-(--color-primary) sm:text-xl"
-        @click="closeMobileMenu"
-      >
-        <span class="text-(--color-primary)">R</span>D
-      </a>
-
-      <ul class="hidden items-center gap-8 md:flex">
-        <li v-for="link in links" :key="link.href">
-          <a
-            :href="link.href"
-            class="text-sm font-medium text-(--color-text-muted) transition-colors hover:text-(--color-primary)"
-          >
-            {{ link.label }}
-          </a>
-        </li>
-      </ul>
-
-      <button
-        type="button"
-        class="inline-flex h-10 w-10 items-center justify-center text-(--color-text) transition-colors hover:text-(--color-primary) md:hidden"
-        :aria-expanded="isMobileMenuOpen"
-        aria-controls="mobile-nav"
-        :aria-label="isMobileMenuOpen ? 'Close menu' : 'Open menu'"
-        @click="isMobileMenuOpen = !isMobileMenuOpen"
-      >
-        <svg
-          v-if="!isMobileMenuOpen"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          class="h-6 w-6"
-          aria-hidden="true"
-        >
-          <path d="M3 6h18M3 12h18M3 18h18" />
-        </svg>
-        <svg
-          v-else
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          class="h-6 w-6"
-          aria-hidden="true"
-        >
-          <path d="M6 6l12 12M18 6L6 18" />
-        </svg>
-      </button>
-    </nav>
-
-    <Transition
-      enter-active-class="transition duration-200 ease-out"
-      enter-from-class="opacity-0 -translate-y-1"
-      enter-to-class="opacity-100 translate-y-0"
-      leave-active-class="transition duration-150 ease-in"
-      leave-from-class="opacity-100 translate-y-0"
-      leave-to-class="opacity-0 -translate-y-1"
+  <header class="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center px-3 lg:top-4">
+    <div
+      ref="rootRef"
+      class="pointer-events-auto w-full max-w-lg overflow-hidden border border-(--color-secondary)/20 bg-(--color-bg-elevated)/75 shadow-xl shadow-black/40 backdrop-blur-md transition-[border-radius] duration-300 lg:w-auto lg:max-w-none"
+      :class="isMenuOpen ? 'rounded-[1.75rem]' : 'rounded-full'"
     >
-      <ul
-        v-if="isMobileMenuOpen"
-        id="mobile-nav"
-        class="flex flex-col gap-1 border-t border-(--color-border) bg-(--color-bg) px-4 pb-4 pt-2 md:hidden"
-      >
-        <li v-for="link in links" :key="link.href">
+      <nav aria-label="Primary">
+        <div class="relative flex h-14 items-center justify-between pl-5 pr-1.5 lg:justify-start lg:gap-2 lg:pl-[1.375rem]">
           <a
-            :href="link.href"
-            class="block rounded-md px-3 py-3 text-base font-medium text-(--color-text-muted) transition-colors hover:text-(--color-primary)"
-            @click="closeMobileMenu"
+            href="#home"
+            class="rounded-md font-heading text-xl font-bold tracking-tight text-(--color-text) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-primary)"
+            @click="closeMenu"
           >
-            {{ link.label }}
+            <span class="text-(--color-primary)">R</span>D
           </a>
-        </li>
-      </ul>
-    </Transition>
+
+          <!-- Desktop: links with a sliding highlight, then Resume -->
+          <span class="mx-1.5 hidden h-[22px] w-px bg-(--color-secondary)/25 lg:block" aria-hidden="true" />
+
+          <div class="relative hidden lg:block">
+            <span
+              class="absolute inset-y-0 left-0 rounded-full border border-(--color-primary)/40 bg-(--color-primary)/15"
+              :class="highlight.ready ? 'transition-[transform,width] duration-300 ease-out' : ''"
+              :style="{ width: `${highlight.w}px`, transform: `translateX(${highlight.x}px)` }"
+              aria-hidden="true"
+            />
+            <ul ref="listRef" class="relative flex gap-0.5">
+              <li v-for="(link, i) in links" :key="link.href">
+                <a
+                  :href="link.href"
+                  :aria-current="active === i ? 'location' : undefined"
+                  class="flex h-10 items-center rounded-full px-4 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-(--color-primary)"
+                  :class="active === i ? 'text-(--color-text)' : 'text-(--color-text-muted) hover:text-(--color-text)'"
+                >
+                  {{ link.label }}
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <span class="mx-1.5 hidden h-[22px] w-px bg-(--color-secondary)/25 lg:block" aria-hidden="true" />
+
+          <a
+            :href="profile.resumeUrl"
+            target="_blank"
+            rel="noopener"
+            class="hidden h-[42px] items-center gap-2 rounded-full border border-(--color-secondary)/35 px-[18px] text-sm font-medium text-(--color-text) transition-colors hover:border-(--color-primary-light) hover:text-(--color-primary-light) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-primary) lg:inline-flex"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[15px] w-[15px]" aria-hidden="true">
+              <path d="M12 4v11M7 11l5 5 5-5M5 20h14" />
+            </svg>
+            Resume
+          </a>
+
+          <!-- Mobile / tablet: menu button -->
+          <button
+            type="button"
+            class="inline-flex h-11 w-11 items-center justify-center rounded-full text-(--color-text) transition-colors hover:text-(--color-primary-light) focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-(--color-primary) lg:hidden"
+            :aria-expanded="isMenuOpen"
+            aria-controls="mobile-nav"
+            :aria-label="isMenuOpen ? 'Close menu' : 'Open menu'"
+            @click="isMenuOpen = !isMenuOpen"
+          >
+            <svg
+              v-if="!isMenuOpen"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.9"
+              stroke-linecap="round"
+              class="h-[22px] w-[22px]"
+              aria-hidden="true"
+            >
+              <path d="M4 8h16M4 16h16" />
+            </svg>
+            <svg
+              v-else
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.9"
+              stroke-linecap="round"
+              class="h-[22px] w-[22px]"
+              aria-hidden="true"
+            >
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+
+          <!-- Scroll progress -->
+          <span
+            class="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 origin-left bg-(--color-primary)"
+            :style="{ transform: `scaleX(${progress})` }"
+            aria-hidden="true"
+          />
+        </div>
+
+        <!-- Mobile / tablet: slide-down panel -->
+        <div
+          id="mobile-nav"
+          class="grid transition-[grid-template-rows] duration-300 ease-out lg:hidden"
+          :class="isMenuOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'"
+          :inert="!isMenuOpen"
+        >
+          <div class="overflow-hidden">
+            <div class="px-2.5 pb-3 pt-1">
+              <div class="mx-2.5 mb-2 h-px bg-(--color-secondary)/20" aria-hidden="true" />
+              <ul class="flex flex-col">
+                <li v-for="(link, i) in links" :key="link.href">
+                  <a
+                    :href="link.href"
+                    :aria-current="active === i ? 'location' : undefined"
+                    class="flex h-12 items-center justify-between rounded-2xl px-4 font-heading text-lg font-medium transition-colors hover:bg-(--color-secondary)/10 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-(--color-primary)"
+                    :class="active === i ? 'bg-(--color-primary)/12 text-(--color-text)' : 'text-(--color-text-muted)'"
+                    @click="closeMenu"
+                  >
+                    {{ link.label }}
+                    <span
+                      class="h-1.5 w-1.5 rounded-full"
+                      :class="active === i ? 'bg-(--color-primary-light)' : 'bg-transparent'"
+                      aria-hidden="true"
+                    />
+                  </a>
+                </li>
+              </ul>
+              <a
+                :href="profile.resumeUrl"
+                target="_blank"
+                rel="noopener"
+                class="mx-1 mt-3 inline-flex h-[46px] w-[calc(100%-0.5rem)] items-center justify-center gap-2 rounded-full border border-(--color-secondary)/35 text-sm font-medium text-(--color-text) transition-colors hover:border-(--color-primary-light) hover:text-(--color-primary-light) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-primary)"
+                @click="closeMenu"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[15px] w-[15px]" aria-hidden="true">
+                  <path d="M12 4v11M7 11l5 5 5-5M5 20h14" />
+                </svg>
+                Resume
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
   </header>
 </template>

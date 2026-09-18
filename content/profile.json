@@ -1,21 +1,60 @@
 {
   "name": "Rafeeuzzaman Dihan",
   "shortName": "Dihan",
-  "rolePrefix": "I design and develop",
+  "nickname": "Dihan",
+  "greeting": "Hello, I am",
+  "rolePrefix": "I am",
   "roles": [
-    "Full-Stack Developer",
-    "Backend Engineer",
-    "Problem Solver",
-    "NestJS & Nuxt Enthusiast"
+    {
+      "label": "Software Engineer",
+      "article": "a",
+      "effect": "compile"
+    },
+    {
+      "label": "Gamer",
+      "article": "a",
+      "effect": "glitch"
+    },
+    {
+      "label": "Streamer",
+      "article": "a",
+      "effect": "live"
+    },
+    {
+      "label": "Photographer",
+      "article": "a",
+      "effect": "focus"
+    },
+    {
+      "label": "Editor",
+      "article": "an",
+      "effect": "cut"
+    }
   ],
-  "bio": "I build fast, reliable web applications end-to-end — from NestJS APIs and database schemas to polished Vue and Nuxt front ends. I care about clean architecture, thoughtful UX, and shipping things that hold up in production.",
+  "bio": "I'm a Software Engineer based in Dhaka, Bangladesh, with two years of professional experience. I enjoy solving problems, getting into the details and turning ideas into something that works. Outside of work, I spend my time gaming, streaming, travelling and capturing moments through my lens. And when it comes to football, Real Madrid is the best club in the world.",
   "email": "hello@dihan.dev",
   "location": "Dhaka, Bangladesh",
   "resumeUrl": "/resume.pdf",
   "socials": [
-    { "platform": "GitHub", "url": "https://github.com/dihan", "icon": "github" },
-    { "platform": "LinkedIn", "url": "https://linkedin.com/in/dihan", "icon": "linkedin" },
-    { "platform": "Twitter", "url": "https://twitter.com/dihan", "icon": "twitter" },
-    { "platform": "Email", "url": "mailto:hello@dihan.dev", "icon": "mail" }
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/dihan",
+      "icon": "github"
+    },
+    {
+      "platform": "LinkedIn",
+      "url": "https://linkedin.com/in/dihan",
+      "icon": "linkedin"
+    },
+    {
+      "platform": "Twitter",
+      "url": "https://twitter.com/dihan",
+      "icon": "twitter"
+    },
+    {
+      "platform": "Email",
+      "url": "mailto:hello@dihan.dev",
+      "icon": "mail"
+    }
   ]
 }

@@ -7,13 +7,6 @@ const props = defineProps<{
 
 const visible = ref(true)
 
-const capsuleTrailRef = ref<SVGPathElement | null>(null)
-const capsuleTipRef = ref<SVGPathElement | null>(null)
-const arrowRef = ref<SVGPathElement | null>(null)
-
-const capsuleLen = ref(140)
-const arrowLen = ref(40)
-
 function onScroll() {
   visible.value = window.scrollY <= 100
 }
@@ -24,9 +17,6 @@ function scrollToTarget() {
 
 onMounted(() => {
   window.addEventListener('scroll', onScroll, { passive: true })
-
-  if (capsuleTrailRef.value) capsuleLen.value = capsuleTrailRef.value.getTotalLength()
-  if (arrowRef.value) arrowLen.value = arrowRef.value.getTotalLength()
 })
 
 onUnmounted(() => {
@@ -35,109 +25,167 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <button
-    type="button"
-    aria-label="Scroll down"
-    class="transition-opacity duration-300"
+  <div
+    class="relative flex flex-col items-center gap-3 transition-opacity duration-300"
     :class="visible ? 'opacity-100' : 'pointer-events-none opacity-0'"
-    @click="scrollToTarget"
   >
-    <svg
-      class="h-14 w-8"
-      viewBox="0 0 32 56"
-      fill="none"
-      :style="{ '--capsule-len': `${capsuleLen}px`, '--arrow-len': `${arrowLen}px` }"
+    <span
+      class="pl-[0.35em] font-heading text-[0.625rem] font-medium uppercase tracking-[0.35em] text-(--color-text-muted)"
+      aria-hidden="true"
     >
-      <path
-        ref="capsuleTrailRef"
-        class="capsule-trail"
-        d="M16 2 A14 14 0 0 1 30 16 L30 40 A14 14 0 0 1 16 54 A14 14 0 0 1 2 40 L2 16 A14 14 0 0 1 16 2 Z"
-        stroke="var(--color-scroll-track)"
-        stroke-width="2"
-        fill="none"
-      />
-      <path
-        ref="capsuleTipRef"
-        class="capsule-tip"
-        d="M16 2 A14 14 0 0 1 30 16 L30 40 A14 14 0 0 1 16 54 A14 14 0 0 1 2 40 L2 16 A14 14 0 0 1 16 2 Z"
-        stroke="var(--color-scroll-arrow)"
-        stroke-width="2"
-        fill="none"
-      />
+      Scroll
+    </span>
 
-      <svg x="4" y="16" width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path
-          ref="arrowRef"
-          class="arrow-path"
-          d="M12 4 L12 17 L5 10 L12 17 L19 10"
-          stroke="var(--color-scroll-arrow)"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          fill="none"
-        />
+    <button
+      type="button"
+      aria-label="Scroll down"
+      :tabindex="visible ? 0 : -1"
+      class="key"
+      @click="scrollToTarget"
+    >
+      <span class="ripple" aria-hidden="true" />
+      <svg
+        class="key-arrow"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.25"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M12 5v14M6 13l6 6 6-6" />
       </svg>
-    </svg>
-  </button>
+    </button>
+
+    <span class="trail hidden md:block" aria-hidden="true" />
+  </div>
 </template>
 
 <style scoped>
-.capsule-trail,
-.capsule-tip {
-  stroke-dasharray: var(--capsule-len);
-  stroke-dashoffset: var(--capsule-len);
-  animation: capsule-draw 5s ease-in-out infinite;
+/* A game-style keycap: it presses, ripples, then a line draws down toward the next section. */
+.key {
+  --key-edge: color-mix(in srgb, var(--color-secondary) 30%, transparent);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--color-secondary) 35%, transparent);
+  border-radius: 0.5rem;
+  background: var(--color-bg-elevated);
+  color: var(--color-primary-light);
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--key-edge);
+  animation: key-press 2.6s ease-in-out infinite;
 }
 
-.capsule-tip {
-  stroke-dasharray: 10 calc(var(--capsule-len) - 10);
+.key:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
 }
 
-@keyframes capsule-draw {
-  0% {
-    stroke-dashoffset: var(--capsule-len);
-  }
-  20% {
-    stroke-dashoffset: 0;
-  }
-  72% {
-    stroke-dashoffset: 0;
-  }
-  80%,
-  100% {
-    stroke-dashoffset: calc(var(--capsule-len) * -1);
-  }
+.ripple {
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--color-primary-light);
+  border-radius: 0.5rem;
+  pointer-events: none;
+  animation: key-ripple 2.6s ease-out infinite;
 }
 
-.arrow-path {
-  stroke-dasharray: var(--arrow-len);
-  stroke-dashoffset: var(--arrow-len);
-  animation: arrow-draw 5s ease-in-out infinite;
+.key-arrow {
+  animation: key-nudge 2.6s ease-in-out infinite;
 }
 
-@keyframes arrow-draw {
+.trail {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  width: 1px;
+  height: 2.75rem;
+  margin-left: -0.5px;
+  background: linear-gradient(to bottom, var(--color-primary-light), transparent);
+  transform-origin: top;
+  animation: key-trail 2.6s ease-in-out infinite;
+}
+
+@keyframes key-press {
   0%,
-  20% {
-    stroke-dashoffset: var(--arrow-len);
-  }
-  36% {
-    stroke-dashoffset: 0;
-  }
-  60% {
-    stroke-dashoffset: 0;
-  }
-  72%,
+  55%,
   100% {
-    stroke-dashoffset: calc(var(--arrow-len) * -1);
+    transform: translateY(0);
+    box-shadow: 0 4px 0 var(--key-edge);
+  }
+  62%,
+  74% {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--key-edge);
+  }
+}
+
+@keyframes key-ripple {
+  0%,
+  58% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  62% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+
+@keyframes key-nudge {
+  0%,
+  55%,
+  100% {
+    transform: translateY(0);
+  }
+  62%,
+  74% {
+    transform: translateY(2px);
+  }
+}
+
+@keyframes key-trail {
+  0%,
+  60% {
+    transform: scaleY(0);
+    opacity: 1;
+  }
+  82% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .capsule-trail,
-  .capsule-tip,
-  .arrow-path {
+  .key,
+  .ripple,
+  .key-arrow,
+  .trail {
     animation: none;
-    stroke-dashoffset: 0;
+  }
+
+  .ripple {
+    opacity: 0;
+  }
+
+  .trail {
+    opacity: 0.5;
   }
 }
 </style>

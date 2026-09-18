@@ -49,6 +49,55 @@ Two reusable, low-opacity (5-10%) background texture components live in `app/com
 
 A `section-container` utility class (defined in `main.css` via `@utility`) gives consistent max-width and horizontal padding across all breakpoints — use it as the outer wrapper for every section's content.
 
+## Personal direction (agreed with the owner)
+
+The site is personal, not corporate: a professional dark-blueprint base with a **personal touch**. Keep clarity and credibility first; personality lives in details (copy, motion, small HUD-style elements), not in a re-skin. Do not change the palette to a hobby theme.
+
+About the owner (Rafeeuzzaman Dihan), used to guide copy, motion and small details:
+
+- Roles he identifies with: Software Engineer, Gamer, Streamer, Photographer, Editor.
+- Games: Call of Duty is his favourite series (HUD / targeting-reticle language fits).
+- Screen: crime thrillers and suspense. Favourites are Inception (movie) and Breaking Bad (series).
+- Football: Real Madrid supporter.
+- Also enjoys travelling. Two years of professional experience as a Software Engineer.
+- Coding is a genuine passion, not just a job.
+
+Where the personality goes: hero HUD details and copy first; later sections may carry small nods (Real Madrid, Inception, Breaking Bad). Never gimmicks that hurt readability or performance.
+
+### Hero copy structure
+
+```
+Hello, I am
+[Name]
+I am a(n) [rotating role]
+```
+
+- Roles live in `content/profile.json`, each with its own article (`"a"` / `"an"`), e.g. `{ "label": "Editor", "article": "an" }`. The article is content, never guessed in a component (English a/an follows sound, not letters). The article animates together with its word.
+- The rotating role must use a distinctive, role-specific transition. Generic slide/fade swaps and the paper-crumple idea were both rejected; do not reintroduce them.
+
+### Hero decisions (approved in the prototype)
+
+- "Dihan" is the owner's nickname: render it in `--color-primary`, the rest of the name in the normal text color.
+- The hero stays minimal: eyebrow, name, role line, bio, two CTAs, scroll cue. **No** hobby chips ("Off the clock"), local-time/status block, per-role readout tags, or role timeline/pager.
+- The rotating role word sits on the page with **no frame, box or corner brackets** around it. Its five role-specific transitions stay: compile (Software Engineer), glitch (Gamer), live wipe (Streamer), rack focus with shutter flash (Photographer), playhead cut (Editor).
+- Scroll cue is a game-style keycap that presses, ripples and draws a line toward the next section (replaces the ruler indicator).
+- Hobbies live in the copy and motion choices, not in visible hobby lists.
+- The hero bio is a short, friendly first-person "about me" written by the owner (`bio` in `content/profile.json`): role and location, two years of experience, then gaming, streaming, travelling, photography and Real Madrid. It names no tech stack. Do not rewrite it without asking.
+- Implementation: `HeroSection.vue` reads `content/profile.json` (`greeting`, `nickname`, `rolePrefix`, `roles[{label, article, effect}]`); the rotating line is `app/components/RotatingRole.vue` driven by `app/composables/useRoleTransition.ts`; the scroll cue is `app/components/ScrollIndicator.vue`. To add a role, add an entry to `roles` (an existing `effect` reuses that transition; a new effect needs a branch in the composable).
+
+### Navbar (approved and implemented in `app/components/layout/AppHeader.vue`)
+
+- A floating glass pill, centered near the top, replaces the full-width bar: logo, the six section links, a Resume button (PDF from `profile.resumeUrl`).
+- Extras: a sliding highlight on the active section's link (scroll-spy), and a thin progress line along the pill's bottom edge that fills with page scroll.
+- **No "Let's talk" button**: Contact is already a section and a nav link.
+- Below `lg` (1024px) the pill is compact (logo + menu button) and opens a slide-down panel with the links and Resume. **No numbers** on the mobile links.
+
+### Process
+
+- For a major visual change, prototype it as an Artifact first and get approval before changing site code.
+- When a decision is genuinely the owner's, ask with concrete options instead of assuming.
+- Record agreed design decisions in this file so they survive across sessions.
+
 ## No backend
 
 This is a fully static site: no admin panel, no backend, no database. Content changes happen by editing files under `/content`, not through a CMS or API.
