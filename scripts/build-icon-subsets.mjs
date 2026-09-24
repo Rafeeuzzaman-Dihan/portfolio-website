@@ -7,6 +7,7 @@ const load = name => JSON.parse(readFileSync(new URL(`../node_modules/@iconify-j
 const logos = load('logos')
 const solar = load('solar')
 const simple = load('simple-icons')
+const lucide = load('lucide')
 
 const LOGOS = [
   'php', 'javascript', 'typescript-icon', 'html-5', 'css-3',
@@ -15,6 +16,10 @@ const LOGOS = [
   'mysql-icon', 'postgresql', 'mongodb-icon', 'redis',
   'docker-icon', 'cloudflare-icon', 'github-actions',
   'git-icon', 'postman-icon', 'swagger', 'phpstorm', 'visual-studio-code', 'claude-icon'
+]
+const LUCIDE = [
+  'server', 'panels-top-left', 'database', 'rocket', 'external-link', 'code', 'refresh-cw', 'life-buoy', 'copy', 'check',
+  'clock', 'calendar', 'map-pin', 'globe', 'monitor'
 ]
 const SOLAR = ['monitor-smartphone-bold-duotone', 'server-square-bold-duotone', 'database-bold-duotone', 'rocket-2-bold-duotone', 'code-square-bold-duotone']
 
@@ -31,4 +36,5 @@ logoSubset.icons.hostinger = { ...withFill(simple.icons.hostinger, '#673de6'), w
 
 writeFileSync(new URL('../app/assets/icons/logos-subset.json', import.meta.url), JSON.stringify(logoSubset))
 writeFileSync(new URL('../app/assets/icons/solar-subset.json', import.meta.url), JSON.stringify(getIcons(solar, SOLAR, true)))
-console.log(`logos: ${Object.keys(logoSubset.icons).length}, solar: ${SOLAR.length}`)
+writeFileSync(new URL('../app/assets/icons/lucide-subset.json', import.meta.url), JSON.stringify(getIcons(lucide, LUCIDE, true)))
+console.log(`lucide: ${LUCIDE.length}, logos: ${Object.keys(logoSubset.icons).length}, solar: ${SOLAR.length}`)

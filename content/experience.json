@@ -1,26 +1,51 @@
 [
   {
-    "company": "Nova Digital Solutions",
-    "role": "Full-Stack Developer",
-    "startDate": "2023-06",
+    "role": "Software Engineer",
+    "company": "Virtuoso Leagues",
+    "city": "Singapore",
+    "mode": "Remote",
+    "startDate": "2026-04",
     "endDate": "Present",
-    "description": "Leading development of client web platforms using NestJS and Nuxt, from API design through deployment. Introduced a shared component library that cut new-feature turnaround time significantly.",
-    "tech": ["NestJS", "Nuxt", "PostgreSQL", "Docker", "Tailwind CSS"]
+    "points": [
+      "Build and improve the web apps and sites that run the company's esports operations.",
+      "Keep tournaments smooth end to end: registration, live management and results.",
+      "Create a great experience for players, organisers and the whole community."
+    ]
   },
   {
-    "company": "Brightpath Tech",
-    "role": "Backend Engineer",
-    "startDate": "2021-09",
-    "endDate": "2023-05",
-    "description": "Built and maintained REST APIs powering an ecommerce platform serving thousands of daily users, focusing on payment integrations, order workflows, and performance tuning.",
-    "tech": ["Node.js", "Express", "MySQL", "Redis", "AWS"]
+    "role": "Jr. Software Engineer",
+    "company": "BD Funnel Builder Limited",
+    "city": "Dhaka, Bangladesh",
+    "mode": "On-site",
+    "startDate": "2026-01",
+    "endDate": "2026-03",
+    "points": [
+      "Improved production SaaS apps with bug fixes, performance tuning and new features.",
+      "Optimised REST APIs and database queries based on real production issues."
+    ]
   },
   {
-    "company": "Freelance",
-    "role": "Web Developer",
-    "startDate": "2020-01",
-    "endDate": "2021-08",
-    "description": "Delivered custom websites and internal tools for small businesses, handling everything from requirements gathering to launch and ongoing support.",
-    "tech": ["Vue", "Laravel", "MySQL", "Bootstrap"]
+    "role": "Software Engineer Trainee",
+    "company": "BD Funnel Builder Limited",
+    "city": "Dhaka, Bangladesh",
+    "mode": "On-site",
+    "startDate": "2025-04",
+    "endDate": "2025-12",
+    "points": [
+      "Built full-stack features in Laravel and Nuxt for inventory, CRM and e-commerce SaaS.",
+      "Shipped auth, role-based access, dashboards, real-time features and integrations (payments, Google Calendar, email)."
+    ]
+  },
+  {
+    "role": "Software Engineer Intern",
+    "company": "BD Funnel Builder Limited",
+    "city": "Dhaka, Bangladesh",
+    "mode": "On-site",
+    "startDate": "2025-01",
+    "endDate": "2025-03",
+    "points": [
+      "Completed three projects with Nuxt, Laravel and Tailwind CSS.",
+      "Worked in an Agile team with a GitHub-based workflow."
+    ]
   }
 ]

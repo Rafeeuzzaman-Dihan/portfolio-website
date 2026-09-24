@@ -101,7 +101,15 @@ I am a(n) [rotating role]
 - Rejected for this section (don't reintroduce): icon + title + paragraph cards (plain, tilted, or spotlight), live-animation bento cards, code-file/editor cards (too technical for non-developers), long descriptions.
 - No "What I build" list here: it overlapped the Services section, so the owner removed it. Service names (SaaS, E-commerce, CRM & Inventory, MVPs, Esports Platforms…) belong in Services. ERP is deliberately not listed anywhere.
 - **No separate Tech Stack block**: it repeated the Loadout's logos, so the owner merged every tool into the Loadout. Tool logos use their **real brand colours** (not the site palette); near-black marks (GitHub, Vercel, AWS text) use their white dark-mode variants.
-- Only list tools the owner actually uses; no library lists. Logos live in the offline subsets under `app/assets/icons/`; after adding a logo or icon, add it to `scripts/build-icon-subsets.mjs` and run `yarn icons`.
+- Only list tools the owner actually uses; no library lists. Logos live in the offline subsets under `app/assets/icons/` (Lucide, brand logos, Solar); after adding a logo or icon, add it to `scripts/build-icon-subsets.mjs` and run `yarn icons`.
+
+### Experience section (approved and implemented in `app/components/sections/ExperienceSection.vue`)
+
+- Real history in `content/experience.json`, newest first: Virtuoso Leagues (Software Engineer, Apr 2026 – Present, Singapore, Remote), then BD Funnel Builder Limited (Dhaka, On-site): Jr. Software Engineer (Jan–Mar 2026), Software Engineer Trainee (Apr–Dec 2025), Software Engineer Intern (Jan–Mar 2025). Bullets are short (2–3 per role), shortened from the owner's LinkedIn.
+- Layout is **Chapters**: roles grouped by start year; a huge year on the left (sticky on `lg`+), that year's roles on the right.
+- Each role card (`experience/RoleCard.vue`): role, company name on its own line, a solid primary **duration badge written in full** ("3 Months", computed from the dates; "Present" counts to the current month), then separate fact chips with icons for dates, city and Remote/On-site. **No** "·"-separated company/location line, **no** Promoted badge, **no** tech logos, **no** year subtitles like "2 roles · Remote".
+- Motion is the **progress rail**: a line beside each chapter fills as the reading line (55% down the viewport) passes; cards wait dimmed until reached, then their node lights, the duration badge pops and counts up from 0, and the fact chips snap in. The year of the chapter under the reading line lights up. Reduced motion shows everything reached, with no animation.
+- Rejected for this section: rank-up/promotion badges, company cards with role switcher, Gantt-style timeline bars, match-history rows, year tabs, watermark years.
 
 ### Process
 
