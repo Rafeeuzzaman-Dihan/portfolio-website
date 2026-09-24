@@ -42,8 +42,9 @@ Theming is defined once, in CSS, via Tailwind v4's `@theme` directive (see `app/
 - `--color-border` — low-opacity blue-gray, for card borders
 - `--font-heading` — Space Grotesk, for headings
 - `--font-body` — Inter, for body copy
+- `--font-mono` — JetBrains Mono, for small HUD-style labels
 
-No ad-hoc hex colors in components. Use the semantic tokens (e.g. `bg-(--color-bg)`, `text-(--color-primary)`, `font-heading`) everywhere. If a new color is genuinely needed, add it as a token in `@theme`, don't inline it.
+No ad-hoc hex colors in components. The one exception is tech-stack brand colours: each skill in `content/skills.json` carries its real `brand` hex (content, not styling), used only for that logo's hover glow. Use the semantic tokens (e.g. `bg-(--color-bg)`, `text-(--color-primary)`, `font-heading`) everywhere. If a new color is genuinely needed, add it as a token in `@theme`, don't inline it.
 
 Two reusable, low-opacity (5-10%) background texture components live in `app/components/backgrounds/`: `DotGridBackground` and `BlueprintBackground`, auto-imported by Nuxt as `<BackgroundsDotGridBackground />` and `<BackgroundsBlueprintBackground />` (subdirectory-prefixed). Drop one inside a `relative` positioned section to add a subtle dot-grid or blueprint/linework layer that fades out at the edges via `mask-image`. Never use gradient blobs or generic AI-style gradient backgrounds.
 
@@ -91,6 +92,16 @@ I am a(n) [rotating role]
 - Extras: a sliding highlight on the active section's link (scroll-spy), and a thin progress line along the pill's bottom edge that fills with page scroll.
 - **No "Let's talk" button**: Contact is already a section and a nav link.
 - Below `lg` (1024px) the pill is compact (logo + menu button) and opens a slide-down panel with the links and Resume. **No numbers** on the mobile links.
+
+### Expertise section (approved and implemented in `app/components/sections/ExpertiseSection.vue`)
+
+- Section titles use `app/components/SectionTitle.vue`: a solid heading with a small primary square. **No** huge outlined word or running light behind it (tried and removed by the owner). Reuse it for other section titles.
+- Expertise = five areas (Frontend, Backend & API, Database Management, DevOps & Deployment, Tools & Workflow). Keep text minimal: each area is an icon, a title, a ~6-word `tagline` and its `tools` (names that must exist in `content/skills.json`, which supplies logo and brand colour). Every skill in `skills.json` appears in exactly one area. No long descriptions and no "used in" projects. Icons come from the Solar bold-duotone set.
+- Layout is the **Loadout** (`expertise/Loadout.vue`), a Call of Duty class-select nod: on `lg`+ the areas are listed on the left and the selected one loads into a HUD panel on the right (corner marks, `01 / 05` readout, tools in a 3-column grid). Corner brackets snap onto the selected area. The areas auto-cycle every 3.5s with a timer bar once the section is on screen, until the visitor hovers, focuses or clicks one; no auto-cycle under reduced motion. Switching must feel quick (~0.3s swap). Below `lg` every area is a card with its tagline and logos.
+- Rejected for this section (don't reintroduce): icon + title + paragraph cards (plain, tilted, or spotlight), live-animation bento cards, code-file/editor cards (too technical for non-developers), long descriptions.
+- No "What I build" list here: it overlapped the Services section, so the owner removed it. Service names (SaaS, E-commerce, CRM & Inventory, MVPs, Esports Platforms…) belong in Services. ERP is deliberately not listed anywhere.
+- **No separate Tech Stack block**: it repeated the Loadout's logos, so the owner merged every tool into the Loadout. Tool logos use their **real brand colours** (not the site palette); near-black marks (GitHub, Vercel, AWS text) use their white dark-mode variants.
+- Only list tools the owner actually uses; no library lists. Logos live in the offline subsets under `app/assets/icons/`; after adding a logo or icon, add it to `scripts/build-icon-subsets.mjs` and run `yarn icons`.
 
 ### Process
 

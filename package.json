@@ -9,7 +9,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "icons": "node scripts/build-icon-subsets.mjs"
   },
   "dependencies": {
     "@iconify/vue": "^5.0.1",
@@ -18,7 +19,10 @@
     "vue-router": "^5.2.0"
   },
   "devDependencies": {
+    "@iconify-json/logos": "^1.2.14",
     "@iconify-json/lucide": "^1.2.121",
+    "@iconify-json/simple-icons": "^1.2.97",
+    "@iconify-json/solar": "^1.2.12",
     "@iconify/utils": "^3.1.4",
     "@nuxt/eslint": "^1.16.0",
     "@tailwindcss/vite": "^4.3.3",

@@ -1,22 +1,34 @@
-[
-  {
-    "icon": "server",
-    "title": "Backend Architecture",
-    "description": "Designing scalable NestJS APIs with clean module boundaries, robust auth, and database schemas that hold up as products grow."
-  },
-  {
-    "icon": "layout",
-    "title": "Frontend Engineering",
-    "description": "Building responsive, accessible interfaces with Vue, Nuxt, and Tailwind that feel fast and stay maintainable."
-  },
-  {
-    "icon": "database",
-    "title": "Database Design",
-    "description": "Modeling relational and document data for performance and integrity, from schema design to query optimization."
-  },
-  {
-    "icon": "rocket",
-    "title": "Deployment & DevOps",
-    "description": "Shipping with confidence using Docker, CI/CD pipelines, and cloud infrastructure that keeps apps reliable in production."
-  }
-]
+{
+  "areas": [
+    {
+      "icon": "solar:monitor-smartphone-bold-duotone",
+      "title": "Frontend Development",
+      "tagline": "Interfaces that feel right on every screen.",
+      "tools": ["Vue.js", "Nuxt", "Tailwind CSS", "TypeScript", "JavaScript", "HTML5", "CSS3"]
+    },
+    {
+      "icon": "solar:server-square-bold-duotone",
+      "title": "Backend & API Development",
+      "tagline": "Secure systems that power the product.",
+      "tools": ["Laravel", "NestJS", "Node.js", "PHP"]
+    },
+    {
+      "icon": "solar:database-bold-duotone",
+      "title": "Database Management",
+      "tagline": "Data that stays fast and reliable.",
+      "tools": ["MySQL", "PostgreSQL", "MongoDB", "Redis"]
+    },
+    {
+      "icon": "solar:rocket-2-bold-duotone",
+      "title": "DevOps & Deployment",
+      "tagline": "Shipping to production, smoothly.",
+      "tools": ["Docker", "AWS", "CI/CD", "Hostinger", "Vercel", "Cloudflare"]
+    },
+    {
+      "icon": "solar:code-square-bold-duotone",
+      "title": "Tools & Workflow",
+      "tagline": "The kit behind a smooth workflow.",
+      "tools": ["Git", "GitHub", "Postman", "Swagger", "PhpStorm", "VS Code", "Claude Code"]
+    }
+  ]
+}

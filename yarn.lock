@@ -628,10 +628,31 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/retry/-/retry-0.4.3.tgz#c2b9d2e374ee62c586d3adbea87199b1d7a7a6ba"
   integrity sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==
 
+"@iconify-json/logos@^1.2.14":
+  version "1.2.14"
+  resolved "https://registry.yarnpkg.com/@iconify-json/logos/-/logos-1.2.14.tgz#98ed4368b199e5ba3441aca5b79ffe985284a1a7"
+  integrity sha512-O36DicXkgAMT6NAsH7MTWlOql8NktHz9fBCItTjz6L/9gyRXw4vQj6qTeVgww5UZWiVugUV1MhVFA/g9HWIkBw==
+  dependencies:
+    "@iconify/types" "*"
+
 "@iconify-json/lucide@^1.2.121":
   version "1.2.121"
   resolved "https://registry.yarnpkg.com/@iconify-json/lucide/-/lucide-1.2.121.tgz#78ecb565070912ee9e3faf222282602ed0590789"
   integrity sha512-zSoQQSmsyFaeTpSwURHJ9PIrsDcGFpDNhGlpiTrs+Ua4uFeH5UsE26L4OEBLrgLWoSK0UO+JhsO8yehSw0403g==
+  dependencies:
+    "@iconify/types" "*"
+
+"@iconify-json/simple-icons@^1.2.97":
+  version "1.2.97"
+  resolved "https://registry.yarnpkg.com/@iconify-json/simple-icons/-/simple-icons-1.2.97.tgz#d441e972b0b1d80282611d1de2eb6d40e72fcd3d"
+  integrity sha512-Z6PmM6jvWVU7rmLzqbxCLJA7SeqCnK6lMHXtjyzHPLZebwuoojBEcHHycppahDzEeN9xujRkrV5J8QpOhMyNrg==
+  dependencies:
+    "@iconify/types" "*"
+
+"@iconify-json/solar@^1.2.12":
+  version "1.2.12"
+  resolved "https://registry.yarnpkg.com/@iconify-json/solar/-/solar-1.2.12.tgz#bbb3722fd89c76b87e03d56094bdebb58f8c0f47"
+  integrity sha512-du9+xxEUCWfjKzr1O+yqtQ3zHYr7M5x88WpnCABdclvW3xpDjJckkPJak+l9k0YqpEgG1F2kjz02csD969R6Fw==
   dependencies:
     "@iconify/types" "*"
 

@@ -1,18 +1,178 @@
 [
   {
     "category": "Languages",
-    "skills": ["TypeScript", "JavaScript", "PHP", "SQL", "HTML5", "CSS3"]
+    "slug": "languages",
+    "skills": [
+      {
+        "name": "PHP",
+        "icon": "logos:php",
+        "brand": "#777BB4"
+      },
+      {
+        "name": "JavaScript",
+        "icon": "logos:javascript",
+        "brand": "#F7DF1E"
+      },
+      {
+        "name": "TypeScript",
+        "icon": "logos:typescript-icon",
+        "brand": "#3178C6"
+      },
+      {
+        "name": "HTML5",
+        "icon": "logos:html-5",
+        "brand": "#E34F26"
+      },
+      {
+        "name": "CSS3",
+        "icon": "logos:css-3",
+        "brand": "#1572B6"
+      }
+    ]
   },
   {
-    "category": "Frameworks",
-    "skills": ["NestJS", "Vue", "Nuxt", "Express", "Laravel", "PrimeVue"]
+    "category": "Frontend",
+    "slug": "frontend",
+    "skills": [
+      {
+        "name": "Vue.js",
+        "icon": "logos:vue",
+        "brand": "#4FC08D"
+      },
+      {
+        "name": "Nuxt",
+        "icon": "logos:nuxt-icon",
+        "brand": "#00DC82"
+      },
+      {
+        "name": "Tailwind CSS",
+        "icon": "logos:tailwindcss-icon",
+        "brand": "#06B6D4"
+      }
+    ]
   },
   {
-    "category": "Cloud & Databases",
-    "skills": ["PostgreSQL", "MySQL", "MongoDB", "Redis", "AWS", "Docker"]
+    "category": "Backend",
+    "slug": "backend",
+    "skills": [
+      {
+        "name": "Node.js",
+        "icon": "logos:nodejs-icon",
+        "brand": "#5FA04E"
+      },
+      {
+        "name": "Laravel",
+        "icon": "logos:laravel",
+        "brand": "#FF2D20"
+      },
+      {
+        "name": "NestJS",
+        "icon": "logos:nestjs",
+        "brand": "#E0234E"
+      }
+    ]
   },
   {
-    "category": "Tools & Design",
-    "skills": ["Tailwind CSS", "Figma", "Git", "GitHub Actions", "Postman", "Vite"]
+    "category": "Databases",
+    "slug": "databases",
+    "skills": [
+      {
+        "name": "MySQL",
+        "icon": "logos:mysql-icon",
+        "brand": "#4479A1"
+      },
+      {
+        "name": "PostgreSQL",
+        "icon": "logos:postgresql",
+        "brand": "#4169E1"
+      },
+      {
+        "name": "MongoDB",
+        "icon": "logos:mongodb-icon",
+        "brand": "#47A248"
+      },
+      {
+        "name": "Redis",
+        "icon": "logos:redis",
+        "brand": "#DC382D"
+      }
+    ]
+  },
+  {
+    "category": "Cloud & DevOps",
+    "slug": "cloud-devops",
+    "skills": [
+      {
+        "name": "AWS",
+        "icon": "logos:aws-dark",
+        "brand": "#FF9900"
+      },
+      {
+        "name": "Docker",
+        "icon": "logos:docker-icon",
+        "brand": "#2496ED"
+      },
+      {
+        "name": "Hostinger",
+        "icon": "logos:hostinger",
+        "brand": "#673DE6"
+      },
+      {
+        "name": "Vercel",
+        "icon": "logos:vercel-dark",
+        "brand": "#FFFFFF"
+      },
+      {
+        "name": "Cloudflare",
+        "icon": "logos:cloudflare-icon",
+        "brand": "#F38020"
+      },
+      {
+        "name": "CI/CD",
+        "icon": "logos:github-actions",
+        "brand": "#2088FF"
+      }
+    ]
+  },
+  {
+    "category": "Tools",
+    "slug": "tools",
+    "skills": [
+      {
+        "name": "Git",
+        "icon": "logos:git-icon",
+        "brand": "#F05032"
+      },
+      {
+        "name": "GitHub",
+        "icon": "logos:github-dark",
+        "brand": "#FFFFFF"
+      },
+      {
+        "name": "Postman",
+        "icon": "logos:postman-icon",
+        "brand": "#FF6C37"
+      },
+      {
+        "name": "Swagger",
+        "icon": "logos:swagger",
+        "brand": "#85EA2D"
+      },
+      {
+        "name": "PhpStorm",
+        "icon": "logos:phpstorm",
+        "brand": "#B345F1"
+      },
+      {
+        "name": "VS Code",
+        "icon": "logos:visual-studio-code",
+        "brand": "#007ACC"
+      },
+      {
+        "name": "Claude Code",
+        "icon": "logos:claude-icon",
+        "brand": "#D97757"
+      }
+    ]
   }
 ]
