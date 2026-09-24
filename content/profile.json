@@ -31,7 +31,7 @@
       "effect": "cut"
     }
   ],
-  "bio": "I'm a Software Engineer based in Dhaka, Bangladesh, with two years of professional experience. I enjoy solving problems, getting into the details and turning ideas into something that works. Outside of work, I spend my time gaming, streaming, travelling and capturing moments through my lens. And when it comes to football, Real Madrid is the best club in the world.",
+  "bio": "Software Engineer by profession, gamer by passion. When I'm not building for the web, I'm streaming, editing videos, travelling or capturing moments through my lens. And yes, Real Madrid is the best club in the world.",
   "email": "hello@dihan.dev",
   "location": "Dhaka, Bangladesh",
   "resumeUrl": "/resume.pdf",
@@ -56,5 +56,44 @@
       "url": "mailto:hello@dihan.dev",
       "icon": "mail"
     }
-  ]
+  ],
+  "dossier": {
+    "fileId": "ViRUS_00",
+    "callsign": "DIHAN",
+    "lines": [
+      {
+        "key": "role",
+        "value": "Software Engineer"
+      },
+      {
+        "key": "specialty",
+        "value": "Full-stack"
+      },
+      {
+        "key": "squad",
+        "value": "Virtuoso Leagues"
+      },
+      {
+        "key": "base",
+        "value": "Dhaka, Bangladesh"
+      },
+      {
+        "key": "main_tech",
+        "value": "Nuxt, Laravel, NestJS"
+      },
+      {
+        "key": "comms",
+        "value": "English, Bangla"
+      },
+      {
+        "key": "service",
+        "value": "since 2025"
+      },
+      {
+        "key": "motto",
+        "value": "\"You mustn't be afraid to dream a little bigger.\" (Inception)"
+      }
+    ],
+    "command": "ssh dihan@virus_00 --decrypt"
+  }
 }
