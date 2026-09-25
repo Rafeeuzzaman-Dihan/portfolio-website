@@ -36,17 +36,35 @@ const decoded = ref(dossier.lines.map(() => false))
 let alive = true
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
+const between = (min: number, max: number) => min + Math.random() * (max - min)
+
+// Delay before a keystroke, modelled on a fast (~80 WPM) typist: repeated keys roll
+// quickly, a new word starts after a short beat, Shift combos cost a little reach,
+// and now and then the hand hesitates. A remembered passphrase goes in faster and evenly.
+function keyDelay(char: string, prev: string | undefined, masked: boolean) {
+  if (masked) return between(75, 125)
+  if (char === prev) return between(60, 90)
+  let ms = between(85, 150)
+  if (prev === ' ') ms += between(70, 150)
+  if (/[A-Z_@]/.test(char)) ms += between(60, 110)
+  if (Math.random() < 0.07) ms += between(150, 260)
+  return ms
+}
+
 // Types into the screen at a human, uneven rhythm, pressing the matching key each time.
 async function typeInto(target: Ref<string>, text: string, masked: boolean) {
+  let prev: string | undefined
   for (const char of text) {
-    await sleep(28 + Math.random() * 38)
+    await sleep(keyDelay(char, prev, masked))
     if (!alive) return
     keyboard.value?.pressChar(masked ? 'xkqzbvmw'[Math.floor(Math.random() * 8)]! : char)
     target.value += masked ? '*' : char
+    prev = char
   }
-  await sleep(120)
+  // A glance over the line before hitting Enter.
+  await sleep(between(260, 380))
   keyboard.value?.press('enter')
-  await sleep(60)
+  await sleep(140)
 }
 
 function decode(index: number) {
@@ -70,7 +88,8 @@ async function play() {
   await typeInto(command, dossier.command, false)
   if (!alive) return
 
-  await sleep(120)
+  // The server asks for the passphrase; the reply takes a moment.
+  await sleep(between(300, 420))
   lights.value = 2
   caretLine.value = 2
   await typeInto(passphrase, '•'.repeat(PASSPHRASE_LENGTH), true)
