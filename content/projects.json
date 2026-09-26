@@ -1,47 +1,210 @@
 [
   {
-    "title": "Verona — Ecommerce Platform",
-    "description": "A full-featured storefront and admin dashboard with cart, checkout, and inventory management, built on a NestJS API and a Nuxt front end.",
-    "image": "/images/projects/verona.jpg",
-    "tech": ["Nuxt", "NestJS", "PostgreSQL", "Stripe", "Tailwind CSS"],
-    "liveUrl": "https://verona-demo.example.com",
-    "githubUrl": "https://github.com/dihan/verona-ecommerce",
-    "category": "Full Stack"
+    "slug": "trip-and-travel",
+    "title": "Trip and Travel",
+    "category": "CRM & Operations",
+    "summary": "An all-in-one CRM for a travel agency: leads, sales pipeline, payment approvals, visas, flights and HR in one place.",
+    "image": "/images/post.png",
+    "status": "classified",
+    "liveUrl": null,
+    "lockLabel": "Classified",
+    "started": "2025-12",
+    "releases": [
+      { "version": "v1", "date": null },
+      { "version": "v2", "date": "2026-09" }
+    ],
+    "tech": ["Laravel", "Vue.js", "TypeScript", "Tailwind CSS", "MySQL"],
+    "caseStudy": {
+      "client": "Travel agency (under NDA)",
+      "role": "Full-stack developer: architecture, backend and frontend",
+      "overview": "A travel agency was running sales, bookings and payments across spreadsheets and chat threads. Trip and Travel replaces all of that with one system that follows every customer from the first call to the finished service.",
+      "challenge": "Every lead passes through several hands (sales, operations, accounts) and every service has its own paperwork: visas, hotels, air tickets, transfers, tour packages. Revenue only counts once each payment is approved, so the numbers on the dashboard had to be exact, not estimated.",
+      "built": [
+        "A six-stage lead lifecycle (lead management, leads, pipeline, work, payment approval, service), each stage with its own board and permissions.",
+        "Transaction-level payment approvals: every payment is approved on its own before it counts as revenue.",
+        "Service modules for visas, hotels, air tickets, transfers, tour packages and appointment dates.",
+        "HR workflows for leave, NOC, salary certificates and special requests, with the letters generated as PDFs.",
+        "A super-admin dashboard with live revenue, gross profit, office expenses and outstanding payments."
+      ],
+      "underTheHood": [
+        "Laravel 12 with Inertia v2 and Vue 3 + TypeScript: an SPA feel without a separate API.",
+        "Real-time updates over WebSockets with Laravel Reverb and Echo.",
+        "Role-based access with Spatie Permission and two-factor sign-in with Fortify. There is no public sign-up; accounts come only from employee management.",
+        "Invoices and certificates rendered to PDF with DomPDF, plus CSV and Excel import and export.",
+        "Backed by a Pest test suite."
+      ],
+      "outcome": "Version 2 shipped in September 2026. The agency now runs sales, service delivery, accounts and HR from one dashboard instead of scattered spreadsheets."
+    }
   },
   {
-    "title": "TaskFlow API",
-    "description": "A multi-tenant project management API with role-based access control, webhooks, and rate limiting, documented with OpenAPI.",
-    "image": "/images/projects/taskflow.jpg",
-    "tech": ["NestJS", "PostgreSQL", "Redis", "Docker"],
-    "liveUrl": "https://taskflow-api-docs.example.com",
-    "githubUrl": "https://github.com/dihan/taskflow-api",
-    "category": "API"
+    "slug": "fc-clubs-analytics",
+    "title": "FC Clubs Analytics",
+    "category": "Data Platform",
+    "summary": "The data engine behind a Pro Clubs esports league: it pulls every match from EA, cleans it up and ranks every player.",
+    "image": "/images/post.png",
+    "status": "classified",
+    "liveUrl": null,
+    "lockLabel": "Classified",
+    "started": "2026-03",
+    "releases": [
+      { "version": "v1", "date": null },
+      { "version": "v2", "date": null, "inProgress": true }
+    ],
+    "tech": ["Laravel", "PostgreSQL", "Nuxt", "Tailwind CSS", "Swagger"],
+    "caseStudy": {
+      "client": "Esports league operator (under NDA)",
+      "role": "Backend lead: data ingestion, ranking engine and admin API",
+      "overview": "FC Clubs Analytics is the source of truth for a competitive EA FC Pro Clubs league. It collects every match, reconciles it and turns it into the standings, player stats and rankings that the public site, VP Clubs 11, shows to fans.",
+      "challenge": "Match data arrives as raw JSON from EA's servers, only inside match windows, and it isn't always right: players rename themselves, move between clubs and results get corrected after the fact. The public numbers had to stay accurate and reproducible even when the data underneath them changes.",
+      "built": [
+        "Scheduled polling of EA match data inside each tournament's match windows, with a log of every poll.",
+        "A reconciliation layer that tracks player aliases, transfers between clubs and corrected results.",
+        "Tournament, team and player services behind an admin panel where staff review and correct data.",
+        "Version 2, in progress: a ranking engine that rates every player from 1 to 99, with separate outfield and goalkeeper formulas, fair tie ranking (1, 2, 2, 4) and snapshots that rebuild when a result is corrected."
+      ],
+      "underTheHood": [
+        "Laravel API on PostgreSQL with JWT authentication and OpenAPI docs through Swagger.",
+        "A Nuxt admin panel built with Nuxt UI, Pinia and Zod-validated forms.",
+        "Versioned formulas and stat snapshots, so any number can be recalculated exactly.",
+        "Unit tests for the tricky cases: ties, zero denominators, tiny samples and goalkeeper separation."
+      ],
+      "outcome": "Version 1 runs the league's data today. Version 2 adds the player and team rankings that power the new profile pages on VP Clubs 11."
+    }
   },
   {
-    "title": "PulseBoard Analytics",
-    "description": "A real-time analytics dashboard with live charts and alerting, built with Vue and PrimeVue components on a WebSocket data feed.",
-    "image": "/images/projects/pulseboard.jpg",
-    "tech": ["Vue", "PrimeVue", "WebSockets", "Chart.js"],
-    "liveUrl": "https://pulseboard.example.com",
-    "githubUrl": "https://github.com/dihan/pulseboard-analytics",
-    "category": "Web App"
+    "slug": "clar-b2b-ecommerce",
+    "title": "Clar B2B E-commerce",
+    "category": "B2B E-commerce",
+    "summary": "A wholesale storefront with its own back office: a deep catalogue, trade accounts, coupons and order management.",
+    "image": "/images/post.png",
+    "status": "classified",
+    "liveUrl": null,
+    "lockLabel": "Classified",
+    "started": null,
+    "releases": [
+      { "version": "v1", "date": "2026-05" }
+    ],
+    "tech": ["Laravel", "Vue.js", "Tailwind CSS", "MySQL"],
+    "caseStudy": {
+      "client": "B2B retailer (under NDA)",
+      "role": "Full-stack developer",
+      "overview": "Clar is a business-to-business shop. Trade customers sign in, browse the catalogue, keep a favourites list and place orders, while a small team runs products, orders and promotions from an admin panel.",
+      "challenge": "B2B catalogues are wide: many brands, categories and product attributes, plus coupons and trade-only accounts. The store had to stay quick to browse for buyers and simple to manage for a small team.",
+      "built": [
+        "A catalogue with brands, categories, tags and filterable product attributes.",
+        "Cart, favourites and order history for signed-in trade buyers.",
+        "Coupons with per-customer usage tracking.",
+        "An admin panel for products, images, banners, orders, users and site settings, with a sales dashboard.",
+        "A multi-language interface."
+      ],
+      "underTheHood": [
+        "Laravel with Inertia.js and Vue 3: one codebase with an SPA feel.",
+        "PrimeVue components styled with Tailwind CSS.",
+        "Chart.js for the dashboard and Swiper for banner carousels.",
+        "MySQL database."
+      ],
+      "outcome": "Version 1 launched in May 2026."
+    }
   },
   {
-    "title": "Nimbus Booking System",
-    "description": "An appointment scheduling platform with calendar sync, automated reminders, and a customer-facing booking widget.",
-    "image": "/images/projects/nimbus.jpg",
-    "tech": ["Nuxt", "NestJS", "MongoDB", "Tailwind CSS"],
-    "liveUrl": "https://nimbus-booking.example.com",
-    "githubUrl": "https://github.com/dihan/nimbus-booking",
-    "category": "Full Stack"
+    "slug": "vp-clubs-11",
+    "title": "VP Clubs 11",
+    "category": "Esports Website",
+    "summary": "The public home of a Pro Clubs league: tournaments, fixtures, match results and nation leagues, straight from the data engine.",
+    "image": "/images/post.png",
+    "status": "live",
+    "liveUrl": "https://vpclubs11.com",
+    "lockLabel": null,
+    "started": "2026-05",
+    "releases": [
+      { "version": "v1", "date": "2026-07" },
+      { "version": "v2", "date": null, "inProgress": true }
+    ],
+    "tech": ["Nuxt", "Vue.js", "Tailwind CSS", "Laravel"],
+    "caseStudy": {
+      "client": "VP Clubs 11 esports league",
+      "role": "Frontend developer for the public site",
+      "overview": "VP Clubs 11 is the public face of FC Clubs Analytics. Players and fans follow tournaments, check fixtures and dig into match results that come straight from the league's data engine.",
+      "challenge": "Fans check results on their phones on match nights, and the audience is international. The site had to be fast, mobile-first and multilingual, with every number coming from the backend so the site never shows its own maths.",
+      "built": [
+        "A tournament hub with fixtures and results for every competition.",
+        "Match pages with the full result and each player's stats.",
+        "Nation leagues with pages of their own.",
+        "A multi-language interface with Nuxt i18n.",
+        "Version 2, in progress: player and team profile pages with 1 to 99 ratings, attribute radars and ranked stats."
+      ],
+      "underTheHood": [
+        "Nuxt with server-side rendering for fast first loads and search-friendly pages.",
+        "Display-ready data from the Laravel API: no ranking logic runs in the browser.",
+        "Tailwind CSS, designed mobile-first."
+      ],
+      "outcome": "Version 1 went live in July 2026 at vpclubs11.com. Version 2 is in progress."
+    }
   },
   {
-    "title": "DevLog CLI",
-    "description": "A command-line tool for developers to log daily progress and generate weekly standup summaries from git history.",
-    "image": "/images/projects/devlog.jpg",
-    "tech": ["Node.js", "TypeScript", "SQLite"],
-    "liveUrl": "",
-    "githubUrl": "https://github.com/dihan/devlog-cli",
-    "category": "Tool"
+    "slug": "bangladesh-dental-college",
+    "title": "Bangladesh Dental College",
+    "category": "Institutional Website",
+    "summary": "A fast, staff-managed website for Bangladesh Dental College that replaces its old WordPress site.",
+    "image": "/images/post.png",
+    "status": "live",
+    "liveUrl": "https://bdc.edu.bd",
+    "lockLabel": null,
+    "started": null,
+    "releases": [
+      { "version": "v1", "date": "2026-08" }
+    ],
+    "tech": ["Nuxt", "TypeScript", "Tailwind CSS", "Laravel", "MySQL"],
+    "caseStudy": {
+      "client": "Bangladesh Dental College (BDC)",
+      "role": "Full-stack developer: public site, API and admin",
+      "overview": "Bangladesh Dental College needed a modern website its own staff can keep up to date. The new site replaces an old WordPress and Elementor build with a Nuxt frontend and a Laravel admin behind it.",
+      "challenge": "The college publishes a lot of content, updated by non-technical staff, and students mostly visit on mobile data. The site had to be quick to load and easy to edit, without a developer for every change.",
+      "built": [
+        "A public website where static pages are prerendered and dynamic pages are server-rendered with caching.",
+        "A Filament admin panel where staff manage content, site settings and contact details.",
+        "A written API contract between the two apps, so the website never hardcodes content that belongs in the admin."
+      ],
+      "underTheHood": [
+        "Nuxt 4, TypeScript and Tailwind CSS, with every brand colour and font defined once as a design token.",
+        "Laravel API with Filament and Spatie Settings on MySQL.",
+        "Deployed to a VPS running Node for server-side rendering."
+      ],
+      "outcome": "Version 1 went live in August 2026 at bdc.edu.bd."
+    }
+  },
+  {
+    "slug": "shams-hardware",
+    "title": "Shams Hardware & Tools",
+    "category": "E-commerce",
+    "summary": "A retail and wholesale store for hardware and tools: customer storefront, admin panel and the API behind both.",
+    "image": "/images/post.png",
+    "status": "private",
+    "liveUrl": null,
+    "lockLabel": "Link soon",
+    "started": null,
+    "releases": [
+      { "version": "v1", "date": "2026-09" }
+    ],
+    "tech": ["NestJS", "PostgreSQL", "Nuxt", "TypeScript", "Tailwind CSS", "Docker"],
+    "caseStudy": {
+      "client": "Shams Hardware & Tools Ltd.",
+      "role": "Full-stack developer: API, storefront and admin panel",
+      "overview": "Shams Hardware & Tools sells hardware and tools to both retail and wholesale buyers in Bangladesh. The platform is three apps: a customer storefront, an admin panel, and the API both of them talk to.",
+      "challenge": "Retail and wholesale customers pay different prices, every order is Cash on Delivery, and nothing that costs money can be trusted from the browser.",
+      "built": [
+        "A customer storefront with the catalogue, cart and checkout, in two languages.",
+        "An admin panel for products, orders and store content.",
+        "Tiered retail and wholesale pricing and delivery charges, all calculated on the server.",
+        "A stateless cart: the server works out every price again, so a tampered request can never change what an order costs."
+      ],
+      "underTheHood": [
+        "NestJS 11 API with TypeORM on PostgreSQL; schema changes go through migrations only.",
+        "Argon2 password hashing, JWT auth, rate limiting, Helmet and structured logging.",
+        "Swagger docs and a Docker Compose setup for local development.",
+        "Nuxt 4 storefront (server-rendered, Nuxt UI, i18n) and a Nuxt admin with PrimeVue and Pinia."
+      ],
+      "outcome": "Version 1 was completed in September 2026."
+    }
   }
 ]
