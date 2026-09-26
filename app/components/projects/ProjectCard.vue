@@ -77,6 +77,7 @@ onBeforeUnmount(() => {
 })
 
 const hidden = computed(() => stage.value === 'locked' || stage.value === 'boot')
+const live = computed(() => props.project.status === 'live')
 </script>
 
 <template>
@@ -84,6 +85,9 @@ const hidden = computed(() => stage.value === 'locked' || stage.value === 'boot'
     class="card relative flex h-full flex-col border border-(--color-border) bg-(--color-bg-elevated)"
     :class="[`is-${stage}`, { 'is-active': active, 'is-muted': muted }]"
   >
+    <!-- Status bar along the top edge (a CoD rarity strip): solid green when live, amber hazard tape when classified. -->
+    <span class="status-bar" :class="live ? 'is-live' : 'is-classified'" aria-hidden="true" />
+
     <div class="shot relative aspect-[16/10] overflow-hidden border-b border-(--color-border) bg-(--color-bg)">
       <img
         :src="project.image"
@@ -103,28 +107,37 @@ const hidden = computed(() => stage.value === 'locked' || stage.value === 'boot'
       </div>
       <span v-if="stage === 'reveal'" class="flash absolute inset-0" aria-hidden="true" />
 
+      <!-- The tab hanging from the status bar names the status in words. -->
       <span
         v-if="!hidden"
-        class="status absolute right-3 top-3 flex items-center gap-1.5 bg-(--color-bg)/90 px-2 py-[3px] font-hud text-xs font-bold uppercase tracking-[0.14em]"
-        :class="project.status === 'live' ? 'text-(--color-primary-light)' : 'text-(--color-text-muted)'"
+        class="status-tab absolute left-3.5 top-0 flex items-center gap-2 px-2.5 pb-[7px] pt-1.5"
+        :class="live ? 'is-live' : 'is-classified'"
+        :title="live ? undefined : 'Client work under NDA: the case study tells the story'"
       >
-        <span class="size-1.5 bg-current" :class="{ 'live-dot': project.status === 'live' }" aria-hidden="true" />
-        {{ STATUS_LABEL[project.status] }}
+        <span v-if="live" class="live-dot size-[7px] rounded-full bg-current" aria-hidden="true" />
+        <Icon v-else icon="lucide:lock" class="size-3" aria-hidden="true" />
+        {{ live ? 'Live' : 'Classified' }}
       </span>
     </div>
 
     <div class="flex grow flex-col gap-3 p-5 sm:p-[22px]">
-      <div class="part flex items-center justify-between gap-3 font-hud text-[13px] font-bold uppercase tracking-[0.16em]" style="--k: 0">
-        <span class="text-(--color-primary-light)">{{ project.category }}</span>
-        <span class="flex shrink-0 items-center gap-1.5 text-(--color-text-muted)">
-          <span v-if="release.inProgress" class="live-dot size-1.5 rounded-full bg-(--color-primary-light)" aria-hidden="true" />
-          {{ releaseLabel(release) }}
+      <div class="part flex items-center justify-between gap-3" style="--k: 0">
+        <span class="font-hud text-[13px] font-bold uppercase tracking-[0.16em] text-(--color-text-muted)">{{ project.category }}</span>
+        <!-- Version track: a filled dot per shipped version, a pinging amber ring for one still being built. -->
+        <span class="release flex shrink-0 items-center gap-2.5" :class="{ 'is-building': release.inProgress }" :title="project.releases.map(releaseLabel).join(', ')">
+          <span class="flex items-center" aria-hidden="true">
+            <template v-for="(item, index) in project.releases" :key="item.version">
+              <span v-if="index > 0" class="track-line" :class="{ 'is-building': item.inProgress }" />
+              <span class="track-dot" :class="{ 'is-building': item.inProgress }" />
+            </template>
+          </span>
+          {{ release.version }} · {{ release.inProgress ? 'In progress' : release.date ? formatMonthYear(release.date) : 'Shipped' }}
         </span>
       </div>
 
       <h3 class="font-heading text-[23px] font-bold leading-tight tracking-[-0.02em]" :class="stage === 'done' ? 'text-(--color-text)' : 'text-(--color-primary-light)'">
         <span class="sr-only">{{ project.title }}</span>
-        <span aria-hidden="true" class="block truncate">{{ title.shown.value }}</span>
+        <span aria-hidden="true">{{ title.shown.value }}</span>
       </h3>
 
       <p class="part text-sm leading-relaxed text-(--color-text-muted)" style="--k: 1">
@@ -153,20 +166,16 @@ const hidden = computed(() => stage.value === 'locked' || stage.value === 'boot'
           :href="project.liveUrl"
           target="_blank"
           rel="noopener"
-          class="live-tab flex h-[46px] grow items-center justify-center gap-2 whitespace-nowrap px-3.5"
-          :aria-label="`See ${project.title} live (opens in a new tab)`"
+          class="visit-btn flex h-[46px] grow items-center justify-center gap-2 whitespace-nowrap px-3.5"
+          :aria-label="`Visit the ${project.title} site (opens in a new tab)`"
         >
-          <span class="live-dot size-[7px] rounded-full bg-(--color-primary-light)" aria-hidden="true" />
-          Live
+          <span class="live-dot size-[7px] rounded-full bg-current" aria-hidden="true" />
+          Visit site
           <Icon icon="lucide:arrow-up-right" class="arrow size-3.5" aria-hidden="true" />
         </a>
-        <span
-          v-else
-          class="lock-tab flex h-[46px] grow items-center justify-center gap-2 whitespace-nowrap px-3.5"
-          :title="project.status === 'classified' ? 'Client work under NDA: the case study tells the story' : 'No public link yet'"
-        >
+        <span v-else class="classified-tab flex h-[46px] grow items-center justify-center gap-2 whitespace-nowrap px-3.5" title="Client work under NDA: the case study tells the story">
           <Icon icon="lucide:lock" class="size-3.5" aria-hidden="true" />
-          {{ project.lockLabel }}
+          Classified
         </span>
       </div>
     </div>
@@ -268,15 +277,18 @@ const hidden = computed(() => stage.value === 'locked' || stage.value === 'boot'
   }
 }
 
+/* Logo tiles glow in their own brand colour on hover. */
 .tool {
   transition:
     border-color 0.3s,
-    color 0.3s;
+    box-shadow 0.3s,
+    transform 0.25s cubic-bezier(0.3, 1.5, 0.5, 1);
 }
 
 .tool:hover {
   border-color: var(--brand);
-  color: var(--color-text);
+  box-shadow: 0 0 16px -4px var(--brand);
+  transform: translateY(-2px);
 }
 
 /* Case study: an outlined button that floods with blue from the left, arrow sliding forward. */
@@ -321,44 +333,134 @@ const hidden = computed(() => stage.value === 'locked' || stage.value === 'boot'
   transform: translateX(6px);
 }
 
-/* Live: a compact tab with a pulsing dot. */
-.live-tab,
-.lock-tab {
+/* Status colours carry meaning only: green = live, amber = classified / in progress. Blue stays for actions. */
+.status-bar {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  left: -1px;
+  z-index: 2;
+  height: 4px;
+  pointer-events: none;
+}
+
+.status-bar.is-live {
+  background: var(--color-live);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--color-live) 45%, transparent);
+}
+
+.status-bar.is-classified {
+  background: repeating-linear-gradient(135deg, var(--color-alert) 0 8px, var(--color-bg) 8px 16px);
+}
+
+/* The tab hangs from the bar onto the screenshot. */
+.status-tab {
+  z-index: 2;
+  margin-top: 3px;
+  background: var(--color-bg-elevated);
+  font: 700 13px/1 var(--font-hud);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.status-tab.is-live {
+  color: var(--color-live);
+}
+
+.status-tab.is-classified {
+  color: var(--color-alert);
+}
+
+/* Version track: shipped versions are solid dots joined by a line, one in progress pings in amber. */
+.release {
+  font: 700 13px/1 var(--font-hud);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.release.is-building {
+  color: var(--color-alert);
+}
+
+.track-dot {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-text);
+}
+
+.track-dot.is-building {
+  border: 2px solid var(--color-alert);
+  background: transparent;
+}
+
+.track-dot.is-building::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 1px solid var(--color-alert);
+  border-radius: 50%;
+  animation: ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.track-line {
+  width: 18px;
+  height: 2px;
+  background: color-mix(in srgb, var(--color-text) 50%, transparent);
+}
+
+.track-line.is-building {
+  background: color-mix(in srgb, var(--color-alert) 60%, transparent);
+}
+
+@keyframes ping {
+  75%,
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+/* Visit site: the green "online" button, clearly separate from the blue Case study. */
+.visit-btn,
+.classified-tab {
   font: 700 16px/1 var(--font-hud);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.live-tab {
-  border: 1px solid color-mix(in srgb, var(--color-text) 30%, transparent);
-  color: var(--color-text);
+.visit-btn {
+  background: var(--color-live);
+  color: var(--color-bg);
   transition:
-    border-color 0.2s,
-    color 0.2s,
-    background-color 0.2s;
+    box-shadow 0.2s,
+    filter 0.2s;
 }
 
-.live-tab:hover,
-.live-tab:focus-visible {
-  border-color: var(--color-primary-light);
-  background: color-mix(in srgb, var(--color-primary) 8%, transparent);
-  color: var(--color-primary-light);
+.visit-btn:hover,
+.visit-btn:focus-visible {
+  filter: brightness(1.1);
+  box-shadow: 0 0 22px -4px var(--color-live);
 }
 
-.live-tab .arrow {
-  transition: transform 0.25s;
+.visit-btn .arrow {
+  transition: transform 0.25s cubic-bezier(0.3, 1.5, 0.5, 1);
 }
 
-.live-tab:hover .arrow,
-.live-tab:focus-visible .arrow {
+.visit-btn:hover .arrow,
+.visit-btn:focus-visible .arrow {
   transform: translate(3px, -3px);
 }
 
-/* No public link: a dashed, quiet tab that says why. */
-.lock-tab {
-  border: 1px dashed color-mix(in srgb, var(--color-secondary) 40%, transparent);
-  color: var(--color-text-muted);
+/* No public link: an amber panel that says why, so it never reads as a broken button. */
+.classified-tab {
+  border: 1px solid color-mix(in srgb, var(--color-alert) 30%, transparent);
+  background: color-mix(in srgb, var(--color-alert) 8%, transparent);
+  color: var(--color-alert);
   font-size: 14px;
+  cursor: help;
 }
 
 .live-dot {
@@ -446,11 +548,14 @@ const hidden = computed(() => stage.value === 'locked' || stage.value === 'boot'
   .card,
   .shot-img,
   .case-btn::before,
-  .case-btn .arrow {
+  .case-btn .arrow,
+  .tool,
+  .visit-btn .arrow {
     transition: none;
   }
 
   .live-dot,
+  .track-dot::after,
   .reticle i,
   .timer {
     animation: none;

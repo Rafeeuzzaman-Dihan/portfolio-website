@@ -14,9 +14,8 @@ export interface Project {
   category: string
   summary: string
   image: string
-  status: 'live' | 'classified' | 'private'
+  status: 'live' | 'classified'
   liveUrl: string | null
-  lockLabel: string | null
   started: string | null
   releases: ProjectRelease[]
   tech: string[]
@@ -42,12 +41,6 @@ export function projectTech(project: Project) {
     if (!skill) throw new Error(`projects.json: "${name}" (${project.slug}) is not in skills.json`)
     return skill
   })
-}
-
-export const STATUS_LABEL: Record<Project['status'], string> = {
-  live: 'Live',
-  classified: 'Classified',
-  private: 'Private'
 }
 
 // "v2 · Sep 2026", "v2 · In progress" or just "v1" when the date isn't recorded.

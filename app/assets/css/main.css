@@ -10,6 +10,9 @@
   --color-text: #e6e9f0;
   --color-text-muted: #9aa3b8;
   --color-border: rgb(139 152 184 / 15%);
+  /* Status only (never decoration): green = live, amber = classified / in progress */
+  --color-live: #4ade80;
+  --color-alert: #fbbf24;
 
   /* Fonts */
   --font-heading: "Space Grotesk", sans-serif;

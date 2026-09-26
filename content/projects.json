@@ -7,13 +7,18 @@
     "image": "/images/post.png",
     "status": "classified",
     "liveUrl": null,
-    "lockLabel": "Classified",
     "started": "2025-12",
     "releases": [
       { "version": "v1", "date": null },
       { "version": "v2", "date": "2026-09" }
     ],
-    "tech": ["Laravel", "Vue.js", "TypeScript", "Tailwind CSS", "MySQL"],
+    "tech": [
+      "Laravel",
+      "Vue.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "MySQL"
+    ],
     "caseStudy": {
       "client": "Travel agency (under NDA)",
       "role": "Full-stack developer: architecture, backend and frontend",
@@ -44,13 +49,18 @@
     "image": "/images/post.png",
     "status": "classified",
     "liveUrl": null,
-    "lockLabel": "Classified",
     "started": "2026-03",
     "releases": [
       { "version": "v1", "date": null },
       { "version": "v2", "date": null, "inProgress": true }
     ],
-    "tech": ["Laravel", "PostgreSQL", "Nuxt", "Tailwind CSS", "Swagger"],
+    "tech": [
+      "Laravel",
+      "PostgreSQL",
+      "Nuxt",
+      "Tailwind CSS",
+      "Swagger"
+    ],
     "caseStudy": {
       "client": "Esports league operator (under NDA)",
       "role": "Backend lead: data ingestion, ranking engine and admin API",
@@ -79,12 +89,16 @@
     "image": "/images/post.png",
     "status": "classified",
     "liveUrl": null,
-    "lockLabel": "Classified",
     "started": null,
     "releases": [
       { "version": "v1", "date": "2026-05" }
     ],
-    "tech": ["Laravel", "Vue.js", "Tailwind CSS", "MySQL"],
+    "tech": [
+      "Laravel",
+      "Vue.js",
+      "Tailwind CSS",
+      "MySQL"
+    ],
     "caseStudy": {
       "client": "B2B retailer (under NDA)",
       "role": "Full-stack developer",
@@ -114,13 +128,17 @@
     "image": "/images/post.png",
     "status": "live",
     "liveUrl": "https://vpclubs11.com",
-    "lockLabel": null,
     "started": "2026-05",
     "releases": [
       { "version": "v1", "date": "2026-07" },
       { "version": "v2", "date": null, "inProgress": true }
     ],
-    "tech": ["Nuxt", "Vue.js", "Tailwind CSS", "Laravel"],
+    "tech": [
+      "Nuxt",
+      "Vue.js",
+      "Tailwind CSS",
+      "Laravel"
+    ],
     "caseStudy": {
       "client": "VP Clubs 11 esports league",
       "role": "Frontend developer for the public site",
@@ -149,12 +167,17 @@
     "image": "/images/post.png",
     "status": "live",
     "liveUrl": "https://bdc.edu.bd",
-    "lockLabel": null,
     "started": null,
     "releases": [
       { "version": "v1", "date": "2026-08" }
     ],
-    "tech": ["Nuxt", "TypeScript", "Tailwind CSS", "Laravel", "MySQL"],
+    "tech": [
+      "Nuxt",
+      "TypeScript",
+      "Tailwind CSS",
+      "Laravel",
+      "MySQL"
+    ],
     "caseStudy": {
       "client": "Bangladesh Dental College (BDC)",
       "role": "Full-stack developer: public site, API and admin",
@@ -179,14 +202,20 @@
     "category": "E-commerce",
     "summary": "A retail and wholesale store for hardware and tools: customer storefront, admin panel and the API behind both.",
     "image": "/images/post.png",
-    "status": "private",
-    "liveUrl": null,
-    "lockLabel": "Link soon",
+    "status": "live",
+    "liveUrl": "https://shamshtlbd.com",
     "started": null,
     "releases": [
       { "version": "v1", "date": "2026-09" }
     ],
-    "tech": ["NestJS", "PostgreSQL", "Nuxt", "TypeScript", "Tailwind CSS", "Docker"],
+    "tech": [
+      "NestJS",
+      "PostgreSQL",
+      "Nuxt",
+      "TypeScript",
+      "Tailwind CSS",
+      "Docker"
+    ],
     "caseStudy": {
       "client": "Shams Hardware & Tools Ltd.",
       "role": "Full-stack developer: API, storefront and admin panel",
@@ -204,7 +233,7 @@
         "Swagger docs and a Docker Compose setup for local development.",
         "Nuxt 4 storefront (server-rendered, Nuxt UI, i18n) and a Nuxt admin with PrimeVue and Pinia."
       ],
-      "outcome": "Version 1 was completed in September 2026."
+      "outcome": "Version 1 went live in September 2026 at shamshtlbd.com."
     }
   }
 ]

@@ -132,10 +132,15 @@ function onKeydown(event: KeyboardEvent) {
               </div>
               <div class="fact">
                 <dt>Status</dt>
-                <dd class="flex items-center gap-2" :class="project.status === 'live' ? 'text-(--color-primary-light)' : ''">
-                  <span class="size-1.5 bg-current" aria-hidden="true" />
-                  {{ project.status === 'live' ? 'Live' : project.lockLabel }}
-                  <span v-if="project.status === 'classified'" class="text-(--color-text-muted)">· client work under NDA</span>
+                <dd v-if="project.status === 'live'" class="flex items-center gap-2 text-(--color-live)">
+                  <span class="live-dot size-[7px] rounded-full bg-current" aria-hidden="true" />
+                  Live
+                  <span class="text-(--color-text-muted)">· {{ project.liveUrl?.replace('https://', '') }}</span>
+                </dd>
+                <dd v-else class="flex items-center gap-2 text-(--color-alert)">
+                  <Icon icon="lucide:lock" class="size-3.5" aria-hidden="true" />
+                  Classified
+                  <span class="text-(--color-text-muted)">· client work under NDA</span>
                 </dd>
               </div>
             </dl>
@@ -190,14 +195,15 @@ function onKeydown(event: KeyboardEvent) {
                 :href="project.liveUrl"
                 target="_blank"
                 rel="noopener"
-                class="primary-btn flex h-12 items-center gap-2.5 px-5"
+                class="visit-btn flex h-12 items-center gap-2.5 px-5"
               >
-                <span class="relative">See it live</span>
-                <Icon icon="lucide:arrow-up-right" class="arrow relative size-4" aria-hidden="true" />
+                <span class="live-dot size-[7px] rounded-full bg-current" aria-hidden="true" />
+                Visit site
+                <Icon icon="lucide:arrow-up-right" class="arrow size-4" aria-hidden="true" />
               </a>
               <span v-else class="lock-note flex h-12 items-center gap-2.5 px-4">
                 <Icon icon="lucide:lock" class="size-4" aria-hidden="true" />
-                {{ project.status === 'classified' ? 'No public link: client work under NDA' : 'Public link coming soon' }}
+                Classified: no public link, client work under NDA
               </span>
               <button v-if="total > 1" type="button" class="next-btn ml-auto flex h-12 items-center gap-2.5 px-5" @click="emit('next')">
                 Next case
@@ -338,7 +344,7 @@ function onKeydown(event: KeyboardEvent) {
   color: var(--color-text);
 }
 
-.primary-btn,
+.visit-btn,
 .next-btn,
 .lock-note {
   font: 700 16px/1 var(--font-hud);
@@ -346,18 +352,29 @@ function onKeydown(event: KeyboardEvent) {
   text-transform: uppercase;
 }
 
-.primary-btn {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--color-primary);
-  background: var(--color-primary);
-  color: var(--color-text);
-  transition: background-color 0.2s;
+/* Green = live, same as the card's Visit site button. */
+.visit-btn {
+  background: var(--color-live);
+  color: var(--color-bg);
+  transition:
+    box-shadow 0.2s,
+    filter 0.2s;
 }
 
-.primary-btn:hover,
-.primary-btn:focus-visible {
-  background: var(--color-primary-light);
+.visit-btn:hover,
+.visit-btn:focus-visible {
+  filter: brightness(1.1);
+  box-shadow: 0 0 22px -4px var(--color-live);
+}
+
+.live-dot {
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.3;
+  }
 }
 
 .next-btn {
@@ -384,14 +401,15 @@ function onKeydown(event: KeyboardEvent) {
   transform: translateX(5px);
 }
 
-.primary-btn:hover .arrow,
-.primary-btn:focus-visible .arrow {
+.visit-btn:hover .arrow,
+.visit-btn:focus-visible .arrow {
   transform: translate(3px, -3px);
 }
 
 .lock-note {
-  border: 1px dashed color-mix(in srgb, var(--color-secondary) 40%, transparent);
-  color: var(--color-text-muted);
+  border: 1px solid color-mix(in srgb, var(--color-alert) 30%, transparent);
+  background: color-mix(in srgb, var(--color-alert) 8%, transparent);
+  color: var(--color-alert);
   font-size: 14px;
 }
 
@@ -439,7 +457,8 @@ function onKeydown(event: KeyboardEvent) {
     transition: none;
   }
 
-  .content > * {
+  .content > *,
+  .live-dot {
     animation: none;
   }
 }
