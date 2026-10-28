@@ -32,28 +32,30 @@
     }
   ],
   "bio": "Software Engineer by profession, gamer by passion. When I'm not building for the web, I'm streaming, editing videos, travelling or capturing moments through my lens. And yes, Real Madrid is the best club in the world.",
-  "email": "hello@dihan.dev",
+  "email": "rafeeuzzamandihan@gmail.com",
+  "phone": "+880 1648-474774",
+  "whatsapp": "8801648474774",
   "location": "Dhaka, Bangladesh",
   "resumeUrl": "/resume.pdf",
   "socials": [
     {
+      "platform": "WhatsApp",
+      "url": "https://wa.me/8801648474774",
+      "icon": "whatsapp"
+    },
+    {
       "platform": "GitHub",
-      "url": "https://github.com/dihan",
+      "url": "https://github.com/Rafeeuzzaman-Dihan",
       "icon": "github"
     },
     {
       "platform": "LinkedIn",
-      "url": "https://linkedin.com/in/dihan",
+      "url": "https://www.linkedin.com/in/rafeeuzzaman-dihan/",
       "icon": "linkedin"
     },
     {
-      "platform": "Twitter",
-      "url": "https://twitter.com/dihan",
-      "icon": "twitter"
-    },
-    {
       "platform": "Email",
-      "url": "mailto:hello@dihan.dev",
+      "url": "mailto:rafeeuzzamandihan@gmail.com",
       "icon": "mail"
     }
   ],

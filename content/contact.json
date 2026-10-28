@@ -1,0 +1,56 @@
+{
+  "channel": {
+    "label": "Comms · Channel 01",
+    "status": "Open"
+  },
+  "signal": {
+    "standby": "Standing by",
+    "receiving": "Receiving",
+    "transmitting": "Transmitting"
+  },
+  "reply": "Within a day or two",
+  "languages": "English, Bangla",
+  "composer": {
+    "label": "New transmission",
+    "title": "Let's build something together",
+    "text": "Tell me what you need. I read everything and reply in a day or two.",
+    "nameLabel": "Your name",
+    "namePlaceholder": "Jane Cooper",
+    "nameError": "Add your name so I know who to reply to.",
+    "messageLabel": "Message",
+    "messagePlaceholder": "What are you building, and when do you need it?",
+    "messageError": "Write a short message first.",
+    "maxLength": 600,
+    "channelLabel": "Send it with",
+    "send": "Send message",
+    "transmitting": "Transmitting",
+    "ready": "Ready",
+    "edit": "Edit message",
+    "retry": "Did it not open? Open it again",
+    "whatsapp": {
+      "label": "WhatsApp",
+      "via": "Via WhatsApp",
+      "hint": "Opens WhatsApp with the message ready to send.",
+      "doneTitle": "WhatsApp is opening",
+      "doneText": "Your message is filled in. Press send in the chat and it reaches me.",
+      "greeting": "Hi Dihan, I'm {name}."
+    },
+    "email": {
+      "label": "Email",
+      "via": "Via email",
+      "hint": "Opens Gmail in your browser with the message ready to send.",
+      "doneTitle": "Gmail is opening",
+      "doneText": "Your message is filled in. Press send there and it reaches me. Not using Gmail? Pick another way below.",
+      "greeting": "Hi Dihan,",
+      "subject": "Project enquiry from {name}",
+      "signoff": "Thanks, {name}"
+    },
+    "others": {
+      "label": "Other ways to send it",
+      "outlook": "Outlook",
+      "app": "Email app",
+      "copy": "Copy message",
+      "copied": "Copied"
+    }
+  }
+}
