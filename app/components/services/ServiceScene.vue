@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
+const { el, onScreen } = useOnScreen()
+
 const props = defineProps<{
   kind: 'saas' | 'shop' | 'business' | 'mvp' | 'web'
   label: string
@@ -19,7 +21,7 @@ onBeforeUnmount(() => clearInterval(timer))
 </script>
 
 <template>
-  <div class="vis relative h-[168px] overflow-hidden border-b border-(--color-border) bg-(--color-bg)" aria-hidden="true">
+  <div ref="el" class="vis relative h-[168px] overflow-hidden border-b border-(--color-border) bg-(--color-bg)" :class="{ paused: !onScreen }" aria-hidden="true">
     <div class="scene" :class="kind">
       <div class="vtop"><span>{{ counter }}</span><b :class="{ 'mr-[42px]': kind === 'shop' }">{{ label }}</b></div>
 
@@ -106,7 +108,7 @@ onBeforeUnmount(() => clearInterval(timer))
   z-index: 2;
   display: flex;
   justify-content: space-between;
-  font: 500 10px/1 var(--font-mono);
+  font: 500 11px/1 var(--font-mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-secondary);
@@ -589,4 +591,10 @@ onBeforeUnmount(() => clearInterval(timer))
   .web .url { width: 13ch; }
   .web .pg b, .web .ph { opacity: 1; }
 }
+
+/* Endless loops stop while the picture is scrolled out of view */
+.paused,
+.paused *,
+.paused *::before,
+.paused *::after { animation-play-state: paused !important; }
 </style>

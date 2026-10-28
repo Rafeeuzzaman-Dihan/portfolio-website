@@ -20,7 +20,7 @@ defineProps<{
   >
     <ServicesServiceScene :kind="service.scene" :label="service.label" :counter="counter" />
 
-    <div class="flex flex-1 flex-col gap-3.5 px-[22px] pt-[22px] pb-6">
+    <div class="flex flex-1 flex-col gap-4 px-6 pt-6 pb-7">
       <div class="flex items-center gap-3.5">
         <span class="grid size-11 shrink-0 place-items-center rounded-[10px] border border-(--color-border) bg-(--color-bg) text-(--color-primary) transition-colors duration-300 group-hover:border-(--color-primary)">
           <Icon :icon="`solar:${service.icon}`" class="size-6" />

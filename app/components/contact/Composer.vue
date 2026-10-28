@@ -193,7 +193,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .label {
-  font: 500 10px/1 var(--font-mono);
+  font: 500 11px/1 var(--font-mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-secondary);

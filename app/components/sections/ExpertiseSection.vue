@@ -4,7 +4,7 @@
 
     <div class="section-container relative">
       <SectionTitle text="Expertise" />
-      <ExpertiseLoadout class="mt-11" />
+      <ExpertiseLoadout class="mt-12 lg:mt-14" />
     </div>
   </div>
 </template>

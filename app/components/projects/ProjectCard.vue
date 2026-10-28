@@ -120,7 +120,7 @@ const live = computed(() => props.project.status === 'live')
       </span>
     </div>
 
-    <div class="flex grow flex-col gap-3 p-5 sm:p-[22px]">
+    <div class="flex grow flex-col gap-3.5 p-5 sm:p-6">
       <div class="part flex items-center justify-between gap-3" style="--k: 0">
         <span class="font-hud text-[13px] font-bold uppercase tracking-[0.16em] text-(--color-text-muted)">{{ project.category }}</span>
         <!-- Version track: a filled dot per shipped version, a pinging amber ring for one still being built. -->

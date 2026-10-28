@@ -92,7 +92,7 @@ function onKeydown(event: KeyboardEvent) {
               class="close flex items-center gap-2.5 px-3 py-2 font-hud text-sm font-bold uppercase tracking-[0.12em] text-(--color-text-muted)"
               @click="emit('close')"
             >
-              <span class="hidden rounded-[3px] border border-(--color-border) px-1.5 py-0.5 font-mono text-[10px] tracking-normal sm:inline">Esc</span>
+              <span class="hidden rounded-[3px] border border-(--color-border) px-1.5 py-0.5 font-mono text-[11px] tracking-normal sm:inline">Esc</span>
               Close
               <Icon icon="lucide:x" class="size-4" aria-hidden="true" />
             </button>

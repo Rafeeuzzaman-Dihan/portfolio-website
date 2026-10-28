@@ -333,7 +333,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
   display: flex;
   justify-content: space-between;
   padding: 9px 12px;
-  font: 500 10px/1 var(--font-mono);
+  font: 500 11px/1 var(--font-mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-secondary);
@@ -820,7 +820,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
 }
 
 .nm {
-  font: 500 10px/1 var(--font-mono);
+  font: 500 11px/1 var(--font-mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-text-muted);
@@ -917,7 +917,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
 .sc.on .ico { border-color: var(--color-primary); }
 
 .pm {
-  font: 500 10px/1 var(--font-mono);
+  font: 500 11px/1 var(--font-mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-secondary);
@@ -962,7 +962,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
   display: flex;
   align-items: center;
   gap: 6px;
-  font: 500 10px/1 var(--font-mono);
+  font: 500 11px/1 var(--font-mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-secondary);

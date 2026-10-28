@@ -135,7 +135,7 @@ function openCase(index: number) {
         </span>
       </div>
 
-      <div ref="gridEl" class="relative mt-12 grid gap-6 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-x-6 lg:gap-y-8">
+      <div ref="gridEl" class="relative mt-12 grid gap-6 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-10">
         <div
           v-for="(project, index) in shown"
           :key="project.slug"

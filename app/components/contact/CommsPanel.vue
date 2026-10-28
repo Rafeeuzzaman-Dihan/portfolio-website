@@ -4,6 +4,7 @@ import profile from '~~/content/profile.json'
 import contact from '~~/content/contact.json'
 
 const signal = useCommsSignal()
+const { el: waveEl, onScreen } = useOnScreen()
 
 // How loud the signal bars run: a low hum, rising while the visitor types, flat out while sending.
 const AMPLITUDE = { standby: 0.42, receiving: 0.9, transmitting: 1 } as const
@@ -37,7 +38,7 @@ const rows = [
     </div>
 
     <!-- Signal -->
-    <div class="wave" :class="{ live }" :style="{ '--amp': amplitude }" aria-hidden="true">
+    <div ref="waveEl" class="wave" :class="{ live, paused: !onScreen }" :style="{ '--amp': amplitude }" aria-hidden="true">
       <span class="label lab">{{ contact.signal[signal] }}</span>
       <i v-for="(bar, index) in bars" :key="index" :class="{ still: reduced }" :style="{ '--d': bar.duration, '--l': bar.delay }" />
     </div>
@@ -76,7 +77,7 @@ const rows = [
 
 <style scoped>
 .label {
-  font: 500 10px/1 var(--font-mono);
+  font: 500 11px/1 var(--font-mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-secondary);
@@ -144,4 +145,10 @@ const rows = [
   .open::before { animation: none; }
   .wave i { animation: none; transform: scaleY(0.4); }
 }
+
+/* Endless loops stop while the picture is scrolled out of view */
+.paused,
+.paused *,
+.paused *::before,
+.paused *::after { animation-play-state: paused !important; }
 </style>
