@@ -8,8 +8,10 @@ const { el: waveEl, onScreen } = useOnScreen()
 
 // How loud the signal bars run: a low hum, rising while the visitor types, flat out while sending.
 const AMPLITUDE = { standby: 0.42, receiving: 0.9, transmitting: 1 } as const
-const amplitude = computed(() => AMPLITUDE[signal.value])
-const live = computed(() => signal.value !== 'standby')
+const poked = ref(false) // the wave also wakes up while the cursor is over it
+const shown = computed(() => (poked.value && signal.value === 'standby' ? 'receiving' : signal.value))
+const amplitude = computed(() => AMPLITUDE[shown.value])
+const live = computed(() => shown.value !== 'standby')
 
 // Fixed pseudo-random timings (not Math.random) so the server and the browser draw the same bars.
 const BARS = 44
@@ -38,8 +40,8 @@ const rows = [
     </div>
 
     <!-- Signal -->
-    <div ref="waveEl" class="wave" :class="{ live, paused: !onScreen }" :style="{ '--amp': amplitude }" aria-hidden="true">
-      <span class="label lab">{{ contact.signal[signal] }}</span>
+    <div ref="waveEl" class="wave" :class="{ live, paused: !onScreen }" :style="{ '--amp': amplitude }" aria-hidden="true" @pointerenter="poked = true" @pointerleave="poked = false">
+      <span class="label lab">{{ contact.signal[shown] }}</span>
       <i v-for="(bar, index) in bars" :key="index" :class="{ still: reduced }" :style="{ '--d': bar.duration, '--l': bar.delay }" />
     </div>
 

@@ -143,7 +143,7 @@ onBeforeUnmount(() => {
             class="tool flex items-center gap-3 rounded-xl border border-(--color-border) bg-(--color-bg) px-3.5 py-3 font-mono text-xs font-medium text-(--color-text-muted)"
             :style="{ '--brand': tool.brand, '--i': index }"
           >
-            <Icon :icon="tool.icon" class="size-[26px] shrink-0" aria-hidden="true" />
+            <Icon :icon="tool.icon" class="size-[26px] shrink-0" :class="{ 'mono-mark': tool.icon.endsWith('-dark') }" aria-hidden="true" />
             {{ tool.name }}
           </li>
             </ul>
@@ -175,7 +175,7 @@ onBeforeUnmount(() => {
             class="grid size-11 place-items-center rounded-[10px] border border-(--color-border) bg-(--color-bg)"
             :title="tool.name"
           >
-            <Icon :icon="tool.icon" class="size-6" aria-hidden="true" />
+            <Icon :icon="tool.icon" class="size-6" :class="{ 'mono-mark': tool.icon.endsWith('-dark') }" aria-hidden="true" />
             <span class="sr-only">{{ tool.name }}</span>
           </li>
         </ul>
@@ -348,6 +348,15 @@ onBeforeUnmount(() => {
   transition:
     border-color 0.3s,
     color 0.3s;
+}
+
+.tool:hover svg {
+  animation: wiggle 0.55s ease;
+}
+
+@keyframes wiggle {
+  25% { transform: rotate(-12deg) scale(1.12); }
+  60% { transform: rotate(9deg) scale(1.08); }
 }
 
 .tool:hover {

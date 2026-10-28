@@ -115,6 +115,23 @@ onBeforeUnmount(() => {
 
 // The rail runs from the first step's centre to the last step's centre (four equal columns).
 const railFill = () => progress.value * 100
+
+// The window also leans toward the pointer (mouse only; stays flat on touch and with reduced motion).
+function lean(event: PointerEvent) {
+  const target = event.currentTarget as HTMLElement
+  if (event.pointerType !== 'mouse' || reduced || window.innerWidth < 1024) return
+  const box = target.getBoundingClientRect()
+  const x = (event.clientX - box.left) / box.width - 0.5
+  const y = (event.clientY - box.top) / box.height - 0.5
+  target.style.setProperty('--mx', `${(x * 7).toFixed(2)}deg`)
+  target.style.setProperty('--my', `${(-y * 6).toFixed(2)}deg`)
+}
+
+function settle(event: PointerEvent) {
+  const target = event.currentTarget as HTMLElement
+  target.style.setProperty('--mx', '0deg')
+  target.style.setProperty('--my', '0deg')
+}
 const pad = (n: number) => String(n).padStart(2, '0')
 </script>
 
@@ -122,7 +139,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
   <div>
     <div ref="trackEl" :style="trackHeight ? { height: `${trackHeight}px` } : undefined">
       <!-- The title travels with the pinned stage; the content sits right under it, no empty bands between. -->
-      <div ref="pinEl" class="sticky top-20 flex flex-col gap-5 pb-4 lg:gap-8">
+      <div ref="pinEl" class="sticky top-4 flex flex-col gap-5 pb-4 md:top-24 lg:top-32 lg:gap-8">
         <SectionTitle :text="how.title" :level="3" />
 
         <div
@@ -132,7 +149,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
           :style="{ '--p': progress }"
         >
           <!-- The product being built. It settles as the project does: the window tilts toward you and straightens by launch. -->
-          <div class="stagewrap">
+          <div class="stagewrap" @pointermove="lean" @pointerleave="settle">
             <span class="reg tl" aria-hidden="true">+</span><span class="reg tr" aria-hidden="true">+</span>
             <span class="reg bl" aria-hidden="true">+</span><span class="reg br" aria-hidden="true">+</span>
 
@@ -311,7 +328,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
 }
 
 @media (height < 680px) and (width < 40rem) {
-  .mock { height: 150px; }
+  .mock { height: 128px; }
 }
 
 @media (width >= 40rem) {
@@ -323,8 +340,8 @@ const pad = (n: number) => String(n).padStart(2, '0')
   .stagewrap { perspective: 1400px; }
 
   .mock {
-    height: clamp(400px, calc(100svh - 19rem), 540px);
-    transform: rotateY(calc((1 - var(--p, 0)) * -7deg)) translateZ(0);
+    height: clamp(360px, calc(100svh - 22rem), 540px);
+    transform: rotateY(calc((1 - var(--p, 0)) * -7deg + var(--mx, 0deg))) rotateX(var(--my, 0deg)) translateZ(0);
     transform-origin: 100% 50%;
   }
 }
@@ -401,8 +418,8 @@ const pad = (n: number) => String(n).padStart(2, '0')
   overflow: hidden;
   background: transparent;
   border: 1px dashed color-mix(in srgb, var(--color-primary) 55%, transparent);
-  transition: background 0.6s, border-color 0.6s;
-  transition-delay: var(--i, 0s);
+  transition: background 0.6s, border-color 0.6s, translate 0.25s, box-shadow 0.25s;
+  transition-delay: var(--i, 0s), var(--i, 0s), 0s, 0s;
 }
 
 .cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; min-height: 0; }
@@ -412,6 +429,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
 .blk.foot { padding: 0; }
 
 .ge2 .blk { background: var(--color-bg); border-style: solid; border-color: var(--color-border); }
+.ge2 .blk:hover { border-color: var(--color-primary); translate: 0 -3px; box-shadow: 0 8px 18px -10px var(--color-primary); }
 
 .ge2 .blk.hero {
   background: color-mix(in srgb, var(--color-primary) 20%, var(--color-bg));
@@ -876,8 +894,8 @@ const pad = (n: number) => String(n).padStart(2, '0')
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--color-primary);
-  box-shadow: 0 0 10px var(--color-primary);
+  background: var(--color-warm);
+  box-shadow: 0 0 10px var(--color-warm);
   transition: width 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
@@ -896,7 +914,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
   transition: -webkit-text-stroke-color 0.4s;
 }
 
-.sc.on .ghost { -webkit-text-stroke-color: color-mix(in srgb, var(--color-primary) 55%, transparent); }
+.sc.on .ghost { -webkit-text-stroke-color: color-mix(in srgb, var(--color-warm) 60%, transparent); }
 
 .top { position: relative; display: flex; align-items: center; gap: 12px; }
 

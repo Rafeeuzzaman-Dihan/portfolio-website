@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import { Icon } from '@iconify/vue/offline'
 import profile from '~~/content/profile.json'
 
 const links = useNavLinks()
-const sectionIds = links.map((link) => link.href.replace('#', ''))
+const sectionIds = links.map(link => link.href.replace('#', ''))
+const RESUME = links.length // the Resume item sits after the section links
 
 const active = ref(0)
 const progress = ref(0)
-const isMenuOpen = ref(false)
+const hovered = ref<number | null>(null)
 
-const rootRef = ref<HTMLElement | null>(null)
-const listRef = ref<HTMLElement | null>(null)
+const dockEl = ref<HTMLElement | null>(null)
+const itemEls = ref<HTMLElement[]>([])
 const highlight = reactive({ x: 0, w: 0, ready: false })
 
 let ticking = false
@@ -39,43 +41,32 @@ function onScroll() {
   requestAnimationFrame(update)
 }
 
-// The sliding highlight follows the real width of each link, so it stays exact whatever the font does.
+// The highlight tile sits under the active item and slides to whichever item you point at (then back).
 function measure() {
-  const item = listRef.value?.children[active.value] as HTMLElement | undefined
-  if (!item) return
-  highlight.x = item.offsetLeft
-  highlight.w = item.offsetWidth
+  const el = itemEls.value[hovered.value ?? active.value]
+  if (!el) return
+  highlight.x = el.offsetLeft
+  highlight.w = el.offsetWidth
 }
 
-function closeMenu() {
-  isMenuOpen.value = false
-}
+const point = (index: number) => (hovered.value = index)
+const release = () => (hovered.value = null)
 
-function onKeydown(e: KeyboardEvent) {
-  if (e.key === 'Escape') closeMenu()
-}
-
-function onDocumentClick(e: MouseEvent) {
-  if (isMenuOpen.value && rootRef.value && !rootRef.value.contains(e.target as Node)) closeMenu()
-}
-
-watch(active, () => nextTick(measure))
+watch([active, hovered], () => nextTick(measure))
 
 onMounted(async () => {
   update()
   window.addEventListener('scroll', onScroll, { passive: true })
   window.addEventListener('resize', onScroll, { passive: true })
-  window.addEventListener('keydown', onKeydown)
-  document.addEventListener('click', onDocumentClick)
 
   await nextTick()
   measure()
-  if (listRef.value) {
+  if (dockEl.value) {
     resizeObserver = new ResizeObserver(measure)
-    resizeObserver.observe(listRef.value)
+    resizeObserver.observe(dockEl.value)
   }
   document.fonts?.ready.then(measure)
-  // Enable the slide transition only after the first placement, so it doesn't fly in from the left.
+  // Enable the slide only after the first placement, so the tile doesn't fly in from the left.
   requestAnimationFrame(() => {
     highlight.ready = true
   })
@@ -84,154 +75,212 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', onScroll)
   window.removeEventListener('resize', onScroll)
-  window.removeEventListener('keydown', onKeydown)
-  document.removeEventListener('click', onDocumentClick)
   resizeObserver?.disconnect()
 })
 </script>
 
 <template>
-  <header class="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center px-3 lg:top-4">
-    <div
-      ref="rootRef"
-      class="pointer-events-auto w-full max-w-lg overflow-hidden border border-(--color-secondary)/20 bg-(--color-bg-elevated)/75 shadow-xl shadow-black/40 backdrop-blur-md transition-[border-radius] duration-300 lg:w-auto lg:max-w-none"
-      :class="isMenuOpen ? 'rounded-[1.75rem]' : 'rounded-full'"
+  <header class="pointer-events-none fixed inset-x-0 bottom-[max(1rem,env(safe-area-inset-bottom))] z-50 flex justify-center px-3 md:top-6 md:bottom-auto lg:top-9">
+    <!-- Off-white dock with a soft ring: icons on phones, icon + label from tablet up -->
+    <nav
+      ref="dockEl"
+      data-tone="light"
+      aria-label="Primary"
+      class="dock pointer-events-auto relative flex w-full max-w-md items-stretch gap-0.5 overflow-hidden rounded-[1.25rem] border border-(--color-border) bg-(--color-bg) p-1.5 md:w-auto md:max-w-none"
+      @pointerleave="release"
     >
-      <nav aria-label="Primary">
-        <div class="relative flex h-14 items-center justify-between pl-5 pr-1.5 lg:justify-start lg:gap-2 lg:pl-[1.375rem]">
-          <a
-            href="#home"
-            class="rounded-md font-heading text-xl font-bold tracking-tight text-(--color-text) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-primary)"
-            @click="closeMenu"
-          >
-            <span class="text-(--color-primary)">R</span>D
-          </a>
+      <!-- The tile that follows you -->
+      <span
+        class="hl absolute top-1.5 bottom-1.5 left-0 rounded-[0.9rem] border border-(--color-border) bg-(--color-bg-elevated)"
+        :class="{ 'hl-ready': highlight.ready }"
+        :style="{ width: `${highlight.w}px`, transform: `translateX(${highlight.x}px)` }"
+        aria-hidden="true"
+      />
 
-          <!-- Desktop: links with a sliding highlight, then Resume -->
-          <span class="mx-1.5 hidden h-[22px] w-px bg-(--color-secondary)/25 lg:block" aria-hidden="true" />
+      <a
+        v-for="(link, i) in links"
+        :key="link.href"
+        :ref="el => { if (el) itemEls[i] = el as HTMLElement }"
+        :href="link.href"
+        :aria-current="active === i ? 'location' : undefined"
+        :aria-label="link.label"
+        class="item"
+        :class="{ on: active === i }"
+        :style="{ '--n': i }"
+        @pointerenter="point(i)"
+        @focus="point(i)"
+        @blur="release"
+      >
+        <Icon :icon="link.icon" class="item-icon" aria-hidden="true" />
+        <span class="item-label">{{ link.label }}</span>
+      </a>
 
-          <div class="relative hidden lg:block">
-            <span
-              class="absolute inset-y-0 left-0 rounded-full border border-(--color-primary)/40 bg-(--color-primary)/15"
-              :class="highlight.ready ? 'transition-[transform,width] duration-300 ease-out' : ''"
-              :style="{ width: `${highlight.w}px`, transform: `translateX(${highlight.x}px)` }"
-              aria-hidden="true"
-            />
-            <ul ref="listRef" class="relative flex gap-0.5">
-              <li v-for="(link, i) in links" :key="link.href">
-                <a
-                  :href="link.href"
-                  :aria-current="active === i ? 'location' : undefined"
-                  class="flex h-10 items-center rounded-full px-4 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-(--color-primary)"
-                  :class="active === i ? 'text-(--color-text)' : 'text-(--color-text-muted) hover:text-(--color-text)'"
-                >
-                  {{ link.label }}
-                </a>
-              </li>
-            </ul>
-          </div>
+      <span class="sep" aria-hidden="true" />
 
-          <span class="mx-1.5 hidden h-[22px] w-px bg-(--color-secondary)/25 lg:block" aria-hidden="true" />
+      <a
+        :ref="el => { if (el) itemEls[RESUME] = el as HTMLElement }"
+        :href="profile.resumeUrl"
+        target="_blank"
+        rel="noopener"
+        aria-label="Resume"
+        class="item"
+        :style="{ '--n': links.length + 1 }"
+        @pointerenter="point(RESUME)"
+        @focus="point(RESUME)"
+        @blur="release"
+      >
+        <Icon icon="lucide:download" class="item-icon" aria-hidden="true" />
+        <span class="item-label">Resume</span>
+      </a>
 
-          <a
-            :href="profile.resumeUrl"
-            target="_blank"
-            rel="noopener"
-            class="hidden h-[42px] items-center gap-2 rounded-full border border-(--color-secondary)/35 px-[18px] text-sm font-medium text-(--color-text) transition-colors hover:border-(--color-primary-light) hover:text-(--color-primary-light) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-primary) lg:inline-flex"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[15px] w-[15px]" aria-hidden="true">
-              <path d="M12 4v11M7 11l5 5 5-5M5 20h14" />
-            </svg>
-            Resume
-          </a>
-
-          <!-- Mobile / tablet: menu button -->
-          <button
-            type="button"
-            class="inline-flex h-11 w-11 items-center justify-center rounded-full text-(--color-text) transition-colors hover:text-(--color-primary-light) focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-(--color-primary) lg:hidden"
-            :aria-expanded="isMenuOpen"
-            aria-controls="mobile-nav"
-            :aria-label="isMenuOpen ? 'Close menu' : 'Open menu'"
-            @click="isMenuOpen = !isMenuOpen"
-          >
-            <svg
-              v-if="!isMenuOpen"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.9"
-              stroke-linecap="round"
-              class="h-[22px] w-[22px]"
-              aria-hidden="true"
-            >
-              <path d="M4 8h16M4 16h16" />
-            </svg>
-            <svg
-              v-else
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.9"
-              stroke-linecap="round"
-              class="h-[22px] w-[22px]"
-              aria-hidden="true"
-            >
-              <path d="M6 6l12 12M18 6L6 18" />
-            </svg>
-          </button>
-
-          <!-- Scroll progress -->
-          <span
-            class="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 origin-left bg-(--color-primary)"
-            :style="{ transform: `scaleX(${progress})` }"
-            aria-hidden="true"
-          />
-        </div>
-
-        <!-- Mobile / tablet: slide-down panel -->
-        <div
-          id="mobile-nav"
-          class="grid transition-[grid-template-rows] duration-300 ease-out lg:hidden"
-          :class="isMenuOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'"
-          :inert="!isMenuOpen"
-        >
-          <div class="overflow-hidden">
-            <div class="px-2.5 pb-3 pt-1">
-              <div class="mx-2.5 mb-2 h-px bg-(--color-secondary)/20" aria-hidden="true" />
-              <ul class="flex flex-col">
-                <li v-for="(link, i) in links" :key="link.href">
-                  <a
-                    :href="link.href"
-                    :aria-current="active === i ? 'location' : undefined"
-                    class="flex h-12 items-center justify-between rounded-2xl px-4 font-heading text-lg font-medium transition-colors hover:bg-(--color-secondary)/10 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-(--color-primary)"
-                    :class="active === i ? 'bg-(--color-primary)/12 text-(--color-text)' : 'text-(--color-text-muted)'"
-                    @click="closeMenu"
-                  >
-                    {{ link.label }}
-                    <span
-                      class="h-1.5 w-1.5 rounded-full"
-                      :class="active === i ? 'bg-(--color-primary-light)' : 'bg-transparent'"
-                      aria-hidden="true"
-                    />
-                  </a>
-                </li>
-              </ul>
-              <a
-                :href="profile.resumeUrl"
-                target="_blank"
-                rel="noopener"
-                class="mx-1 mt-3 inline-flex h-[46px] w-[calc(100%-0.5rem)] items-center justify-center gap-2 rounded-full border border-(--color-secondary)/35 text-sm font-medium text-(--color-text) transition-colors hover:border-(--color-primary-light) hover:text-(--color-primary-light) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-primary)"
-                @click="closeMenu"
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[15px] w-[15px]" aria-hidden="true">
-                  <path d="M12 4v11M7 11l5 5 5-5M5 20h14" />
-                </svg>
-                Resume
-              </a>
-            </div>
-          </div>
-        </div>
-      </nav>
-    </div>
+      <!-- Scroll progress along the bottom edge -->
+      <span class="progress" :style="{ transform: `scaleX(${progress})` }" aria-hidden="true" />
+    </nav>
   </header>
 </template>
+
+<style scoped>
+/* Soft ring: a hairline border, a pale ring just outside it, and a soft shadow. It drops in with a spring when the page loads. */
+.dock {
+  box-shadow:
+    0 0 0 5px color-mix(in srgb, var(--color-bg-elevated) 55%, transparent),
+    0 2px 4px color-mix(in srgb, var(--color-text) 12%, transparent),
+    0 12px 22px -8px color-mix(in srgb, var(--color-text) 40%, transparent),
+    0 34px 54px -22px color-mix(in srgb, var(--color-text) 65%, transparent);
+  animation: drop 0.9s cubic-bezier(0.2, 1.15, 0.3, 1) 0.2s both;
+}
+
+@keyframes drop {
+  from { opacity: 0; transform: translateY(-120%) scale(0.94); }
+}
+
+@keyframes lift {
+  from { opacity: 0; transform: translateY(140%) scale(0.94); }
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
+@media (width < 48rem) {
+  .dock { animation-name: lift; }
+  .item { animation-name: pop-in; }
+}
+
+.hl-ready {
+  transition:
+    transform 0.5s cubic-bezier(0.3, 1.35, 0.5, 1),
+    width 0.5s cubic-bezier(0.3, 1.35, 0.5, 1);
+}
+
+.item {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0.6rem 0.25rem;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  border-radius: 0.9rem;
+  transition: color 0.2s;
+  animation: rise 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(0.45s + var(--n) * 60ms);
+}
+
+/* From tablet up the icon sits beside its label, which keeps the dock slim */
+@media (width >= 48rem) {
+  .item {
+    flex: none;
+    padding: 0.6rem 0.8rem;
+  }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(-10px); }
+}
+
+.item:hover,
+.item:focus-visible {
+  color: var(--color-primary);
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+.item.on {
+  color: var(--color-text);
+}
+
+.item-icon {
+  flex: none;
+  width: 1.3rem;
+  height: 1.3rem;
+  transition: color 0.2s;
+}
+
+.item.on .item-icon {
+  color: var(--color-primary);
+}
+
+/* Labels: always shown from tablet up, icon only on phones */
+.item-label {
+  display: none;
+  font: 600 0.8125rem / 1.1 var(--font-body);
+  letter-spacing: 0.01em;
+}
+
+@media (width >= 48rem) {
+  .item-label {
+    display: block;
+  }
+}
+
+/* A dark-red dot marks the section you are in */
+.item.on::after {
+  content: '';
+  position: absolute;
+  top: 0.3rem;
+  right: 0.4rem;
+  width: 0.3125rem;
+  height: 0.3125rem;
+  background: var(--color-warm);
+  border-radius: 50%;
+  animation: pip 0.5s cubic-bezier(0.3, 1.8, 0.5, 1) both;
+}
+
+@keyframes pip {
+  from { transform: scale(0); }
+}
+
+.sep {
+  align-self: center;
+  flex: none;
+  width: 2px;
+  height: 1.6rem;
+  margin: 0 0.3rem;
+  background: color-mix(in srgb, var(--color-text) 28%, transparent);
+  border-radius: 1px;
+}
+
+.progress {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: var(--color-primary);
+  transform-origin: left;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dock, .item, .item.on::after { animation: none; }
+  .hl-ready, .item, .item-icon { transition: none; }
+}
+</style>

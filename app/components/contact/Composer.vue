@@ -281,6 +281,8 @@ onBeforeUnmount(() => {
 .send:hover { translate: 0 -2px; }
 .send:hover::before,
 .send:focus-visible::before { transform: scaleX(1); }
+.send:hover,
+.send:focus-visible { color: var(--on-accent); }
 
 .kc {
   display: grid;

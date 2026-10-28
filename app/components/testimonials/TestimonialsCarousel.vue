@@ -160,8 +160,8 @@ onBeforeUnmount(() => clearTimeout(timer))
   left: -1px;
   width: 0;
   height: 2px;
-  background: var(--color-primary);
-  box-shadow: 0 0 8px var(--color-primary);
+  background: var(--color-warm);
+  box-shadow: 0 0 8px var(--color-warm);
 }
 
 .tab.done i { width: calc(100% + 2px); opacity: 0.4; }

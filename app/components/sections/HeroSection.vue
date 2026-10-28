@@ -26,7 +26,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 </script>
 
 <template>
-  <div class="relative flex min-h-screen flex-col overflow-hidden pb-8 pt-24 md:pb-14">
+  <div class="relative flex min-h-[calc(100svh-4rem)] flex-col overflow-hidden pb-12 pt-20 md:pb-20 md:pt-[8.5rem] lg:pt-[9.25rem]">
     <BackgroundsDotGridBackground />
 
     <!-- HUD corner marks, kept clear of the fixed header -->
@@ -89,7 +89,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
       </div>
     </div>
 
-    <ScrollIndicator target="#expertise" class="relative mx-auto mt-10" />
+    <ScrollIndicator target="#expertise" class="relative mx-auto mt-6" />
   </div>
 </template>
 

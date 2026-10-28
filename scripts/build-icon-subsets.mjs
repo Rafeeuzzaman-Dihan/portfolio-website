@@ -19,7 +19,8 @@ const LOGOS = [
 ]
 const LUCIDE = [
   'server', 'panels-top-left', 'database', 'rocket', 'external-link', 'code', 'refresh-cw', 'life-buoy', 'copy', 'check',
-  'clock', 'calendar', 'map-pin', 'globe', 'monitor', 'arrow-right', 'arrow-up-right', 'lock', 'x'
+  'clock', 'calendar', 'map-pin', 'globe', 'monitor', 'arrow-right', 'arrow-up-right', 'lock', 'x',
+  'house', 'layers', 'briefcase', 'folder', 'handshake', 'mail', 'download'
 ]
 const SOLAR = [
   'monitor-smartphone-bold-duotone', 'server-square-bold-duotone', 'database-bold-duotone', 'rocket-2-bold-duotone', 'code-square-bold-duotone',

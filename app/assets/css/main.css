@@ -13,6 +13,8 @@
   /* Status only (never decoration): green = live, amber = classified / in progress */
   --color-live: #4ade80;
   --color-alert: #fbbf24;
+  /* Small highlights only (title squiggle, hover shadows, active-note line): never body text */
+  --color-warm: #f4525b;
 
   /* Fonts */
   --font-heading: "Space Grotesk", sans-serif;
@@ -25,7 +27,115 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
+    /* Keep the scrollbar's space when the case study locks page scroll, so the page behind never re-lays out and jumps. */
+    scrollbar-gutter: stable;
   }
+}
+
+/* ---------- Tones: sections alternate between a DARK tone and a WHITE tone ----------
+   The dark tone is the original theme (it matches the hero). The white tone uses Navy as its accent. Set data-tone="dark|light"
+   on a section and everything inside flips, because components only ever read the tokens above. */
+:root {
+  --on-accent: #ffffff; /* text on a filled accent button */
+  --mono-filter: none; /* near-black logo marks ship as white versions; the white tone inverts them */
+  --lift: 0 26px 50px -12px rgb(0 0 0 / 60%); /* a card that springs up */
+  --hard: 0 0 28px -8px var(--color-primary); /* a card on hover */
+  --slant: clamp(36px, 5.5vw, 70px); /* size of the rounded sheet between sections */
+}
+
+[data-tone] {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+[data-tone='dark'] {
+  --color-bg: #0a0e14;
+  --color-bg-elevated: #10151f;
+  --color-primary: #3b82f6;
+  --color-primary-light: #60a5fa;
+  --color-secondary: #8b98b8;
+  --color-text: #e6e9f0;
+  --color-text-muted: #9aa3b8;
+  --color-border: rgb(139 152 184 / 15%);
+  --color-live: #4ade80;
+  --color-alert: #fbbf24;
+  --color-warm: #f4525b;
+  --on-accent: #ffffff;
+  --mono-filter: none;
+  --lift: 0 26px 50px -12px rgb(0 0 0 / 60%);
+  --hard: 0 0 28px -8px var(--color-primary);
+  color-scheme: dark;
+}
+
+[data-tone='light'] {
+  --color-bg: #f7f8fa;
+  --color-bg-elevated: #ffffff;
+  --color-primary: #1e3a8a;
+  --color-primary-light: #172554;
+  --color-secondary: #5b6577;
+  --color-text: #0b1020;
+  --color-text-muted: #4b5568;
+  --color-border: #dde2ec;
+  --color-live: #15803d;
+  --color-alert: #b45309;
+  --color-warm: #b91c1c;
+  --on-accent: #ffffff;
+  --mono-filter: invert(1);
+  --lift: 7px 8px 0 var(--color-warm);
+  --hard: 7px 8px 0 var(--color-warm);
+  color-scheme: light;
+}
+
+.mono-mark {
+  filter: var(--mono-filter);
+}
+
+/* A band is one full-width section (plain white or plain black) that can meet its neighbour on a shaped edge. */
+.band {
+  position: relative;
+  isolation: isolate;
+}
+
+.band-elevated {
+  background-color: var(--color-bg-elevated);
+}
+
+/* Rounded sheet: each section overlaps the one above like a sheet of paper, with big rounded top corners. The overlap is capped so the
+   hero's centred scroll cue is never covered. */
+.band-seam {
+  margin-top: calc(var(--slant) * -0.6);
+  padding-top: calc(var(--slant) * 0.6);
+  border-radius: calc(var(--slant) * 0.8) calc(var(--slant) * 0.8) 0 0;
+}
+
+/* Backgrounds are plain white or plain black, except on a few sections that choose one texture with data-bg:
+   lines = fine diagonal hairlines, grain = a fine film grain. */
+.band {
+  --bg-line: color-mix(in srgb, var(--color-text) 7%, transparent);
+}
+
+.band[data-bg]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.band[data-bg='lines']::before {
+  background-image: repeating-linear-gradient(135deg, var(--bg-line) 0 1px, transparent 1px 16px);
+}
+
+.band[data-bg='grain']::before {
+  opacity: 0.1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.1 -.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px;
+}
+
+/* White specks read louder on black, so the dark tone is inverted and kept low */
+.band[data-tone='dark'][data-bg='grain']::before {
+  opacity: 0.12;
+  filter: invert(1);
 }
 
 /* Consistent max-width + horizontal padding for every section, mobile-first. */

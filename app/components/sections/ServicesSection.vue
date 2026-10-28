@@ -10,8 +10,6 @@ const counter = (index: number) => `${pad(index + 1)} / ${pad(items.length)}`
 <template>
   <!-- overflow-clip, not overflow-hidden: hidden would stop the "How I work" window from sticking. -->
   <div class="relative overflow-clip py-20 sm:py-24">
-    <BackgroundsDotGridBackground />
-
     <div class="section-container relative">
       <SectionTitle text="Services" />
 

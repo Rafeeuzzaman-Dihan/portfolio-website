@@ -3,23 +3,15 @@ import profile from '~~/content/profile.json'
 
 const year = new Date().getFullYear()
 const navLinks = useNavLinks()
-const city = profile.location.split(',')[0]
 </script>
 
 <template>
-  <footer class="relative border-t border-(--color-border) bg-(--color-bg-elevated)">
+  <footer class="band band-elevated band-seam" data-bg="grain" data-tone="dark">
     <div class="section-container border-b border-(--color-border) pt-16 pb-14">
       <TestimonialsCarousel />
     </div>
 
     <div class="section-container flex flex-col items-center gap-7 py-10 md:flex-row md:justify-between">
-      <a
-        href="#home"
-        class="font-heading text-[1.4rem] leading-none font-bold tracking-[-0.02em] text-(--color-text)"
-      >
-        <span class="text-(--color-primary)">R</span>D
-      </a>
-
       <ul class="flex flex-wrap items-center justify-center gap-x-[26px] gap-y-2">
         <li v-for="link in navLinks" :key="link.href">
           <a
@@ -39,14 +31,9 @@ const city = profile.location.split(',')[0]
     </div>
 
     <div class="border-t border-(--color-border)">
-      <div class="section-container flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-[18px]">
-        <p class="text-[0.8rem] text-(--color-text-muted)">
-          &copy; {{ year }} {{ profile.name }}. All rights reserved.
-        </p>
-        <p class="flex items-center gap-2 font-mono text-[11px] tracking-[0.08em] text-(--color-secondary)">
-          <span class="size-1.5 bg-(--color-primary)" aria-hidden="true" />Built in {{ city }}
-        </p>
-      </div>
+      <p class="section-container pt-[18px] pb-[calc(6rem+env(safe-area-inset-bottom))] text-center md:pb-[18px] text-[0.8rem] text-(--color-text-muted)">
+        &copy; {{ year }} {{ profile.name }}. All rights reserved.
+      </p>
     </div>
   </footer>
 </template>

@@ -119,8 +119,6 @@ function openCase(index: number) {
 
 <template>
   <div class="relative overflow-hidden py-20 sm:py-24">
-    <BackgroundsBlueprintBackground />
-
     <div :ref="el => target(el as Element | null)" class="section-container relative">
       <div class="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
         <div class="grid gap-4">

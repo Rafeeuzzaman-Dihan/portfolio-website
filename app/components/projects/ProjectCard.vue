@@ -151,7 +151,7 @@ const live = computed(() => props.project.status === 'live')
           class="part tool flex items-center gap-1.5 border border-(--color-border) bg-(--color-bg) px-2 py-1 font-mono text-[11px] font-medium text-(--color-text-muted)"
           :style="{ '--brand': tool.brand, '--k': 2 + index * 0.4 }"
         >
-          <Icon :icon="tool.icon" class="size-4 shrink-0" aria-hidden="true" />
+          <Icon :icon="tool.icon" class="size-4 shrink-0" :class="{ 'mono-mark': tool.icon.endsWith('-dark') }" aria-hidden="true" />
           {{ tool.name }}
         </li>
       </ul>
@@ -197,6 +197,7 @@ const live = computed(() => props.project.status === 'live')
 }
 
 .card:hover {
+  box-shadow: var(--hard);
   border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
 }
 
@@ -204,7 +205,7 @@ const live = computed(() => props.project.status === 'live')
 .card.is-active {
   z-index: 2;
   transform: translateY(-12px);
-  box-shadow: 0 26px 50px -12px rgb(0 0 0 / 60%);
+  box-shadow: var(--lift);
 }
 
 /* Screenshots never zoom: only their colour changes. */
@@ -316,7 +317,7 @@ const live = computed(() => props.project.status === 'live')
 
 .case-btn:hover,
 .case-btn:focus-visible {
-  color: var(--color-text);
+  color: var(--on-accent);
 }
 
 .case-btn:hover::before,

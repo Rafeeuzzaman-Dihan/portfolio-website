@@ -31,7 +31,7 @@ watch(() => props.project, (project, previous) => {
   if (project && !previous) {
     returnFocus = document.activeElement as HTMLElement | null
     document.documentElement.style.overflow = 'hidden'
-    nextTick(() => closeBtn.value?.focus())
+    nextTick(() => closeBtn.value?.focus({ preventScroll: true }))
   }
   if (!project && previous) {
     document.documentElement.style.overflow = ''
@@ -71,16 +71,16 @@ function onKeydown(event: KeyboardEvent) {
 
 <template>
   <Teleport to="body">
-    <Transition name="case">
-      <div v-if="project" class="fixed inset-0 z-[60] flex justify-end" @keydown="onKeydown">
-        <div class="backdrop absolute inset-0 bg-(--color-bg)/80 backdrop-blur-sm" aria-hidden="true" @click="emit('close')" />
+    <Transition name="case" :duration="{ enter: 360, leave: 260 }">
+      <div v-if="project" class="fixed inset-0 z-[60] flex justify-end md:p-4 lg:p-6" @keydown="onKeydown">
+        <div class="backdrop absolute inset-0" aria-hidden="true" @click="emit('close')" />
 
         <div
           ref="panel"
           role="dialog"
           aria-modal="true"
           :aria-labelledby="`case-${project.slug}-title`"
-          class="panel relative h-full w-full overflow-y-auto border-l border-(--color-border) bg-(--color-bg) md:max-w-[760px]"
+          class="panel relative h-full w-full overflow-y-auto border-(--color-border) bg-(--color-bg) md:max-w-[760px] md:rounded-2xl md:border"
         >
           <div class="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-(--color-border) bg-(--color-bg)/90 px-5 py-3.5 backdrop-blur sm:px-8">
             <span class="font-hud text-sm font-bold uppercase tracking-[0.18em] text-(--color-text-muted)">
@@ -413,36 +413,62 @@ function onKeydown(event: KeyboardEvent) {
   font-size: 14px;
 }
 
-/* The panel slides in from the right over a dimmed page; its content rises in. */
-.case-enter-active,
-.case-leave-active {
-  transition: opacity 0.3s;
+/* The panel slides in from the right over a dimmed, blurred page; its content rises in.
+   The dim, the blur and the slide share one clock and one curve, and nothing here fades by opacity: a blur inside a fading layer
+   cannot see the page behind it, so it used to pop in at the very end of the fade. */
+.backdrop {
+  background-color: color-mix(in srgb, black 55%, transparent);
+  -webkit-backdrop-filter: blur(8px) saturate(0.8);
+  backdrop-filter: blur(8px) saturate(0.8);
 }
 
-.case-enter-active .panel,
-.case-leave-active .panel {
-  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+/* The blur radius is never animated (that lags and drifts from the slide); the backdrop layer itself fades, which fades dim and blur as one. */
+.case-enter-active .backdrop {
+  transition: opacity 0.28s ease-out;
 }
 
-.case-enter-from,
-.case-leave-to {
+.case-leave-active .backdrop {
+  transition: opacity 0.22s ease-in;
+}
+
+.case-enter-from .backdrop,
+.case-leave-to .backdrop {
   opacity: 0;
+}
+
+/* Slide + pop: the card glides in from the right while it scales up from slightly small, with a soft settle. */
+.panel {
+  box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.7), 0 0 0 1px color-mix(in srgb, var(--color-primary) 18%, transparent);
+}
+
+.case-enter-active .panel {
+  transition:
+    transform 0.36s cubic-bezier(0.2, 0.9, 0.25, 1),
+    opacity 0.2s ease-out;
+  will-change: transform, opacity;
+}
+
+.case-leave-active .panel {
+  transition:
+    transform 0.26s cubic-bezier(0.4, 0, 1, 1),
+    opacity 0.2s ease-in;
 }
 
 .case-enter-from .panel,
 .case-leave-to .panel {
-  transform: translateX(100%);
+  opacity: 0;
+  transform: translate3d(9%, 0, 0) scale(0.95);
 }
 
 .content > * {
-  animation: rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: rise 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.content > *:nth-child(1) { animation-delay: 0.1s; }
-.content > *:nth-child(2) { animation-delay: 0.16s; }
-.content > *:nth-child(3) { animation-delay: 0.22s; }
-.content > *:nth-child(4) { animation-delay: 0.28s; }
-.content > *:nth-child(n + 5) { animation-delay: 0.34s; }
+.content > *:nth-child(1) { animation-delay: 0.04s; }
+.content > *:nth-child(2) { animation-delay: 0.08s; }
+.content > *:nth-child(3) { animation-delay: 0.12s; }
+.content > *:nth-child(4) { animation-delay: 0.16s; }
+.content > *:nth-child(n + 5) { animation-delay: 0.2s; }
 
 @keyframes rise {
   from {
@@ -453,7 +479,9 @@ function onKeydown(event: KeyboardEvent) {
 
 @media (prefers-reduced-motion: reduce) {
   .case-enter-active .panel,
-  .case-leave-active .panel {
+  .case-leave-active .panel,
+  .case-enter-active .backdrop,
+  .case-leave-active .backdrop {
     transition: none;
   }
 

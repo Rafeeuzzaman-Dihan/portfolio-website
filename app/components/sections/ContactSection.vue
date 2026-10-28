@@ -1,7 +1,5 @@
 <template>
   <div class="relative overflow-hidden py-20 sm:py-28">
-    <BackgroundsBlueprintBackground />
-
     <div class="section-container relative">
       <SectionTitle text="Contact" />
 
