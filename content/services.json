@@ -1,26 +1,171 @@
-[
-  {
-    "number": "01",
-    "icon": "code",
-    "title": "Web Application Development",
-    "description": "End-to-end builds using Nuxt and NestJS, from architecture and data modeling to a polished, responsive UI."
+{
+  "services": [
+    {
+      "id": "saas",
+      "scene": "saas",
+      "icon": "monitor-bold-duotone",
+      "title": "SaaS Products",
+      "tagline": "Software people pay for every month.",
+      "label": "Subscriptions",
+      "gets": [
+        "Sign-up, login and billing",
+        "Accounts for teams and admins",
+        "A dashboard customers enjoy using"
+      ]
+    },
+    {
+      "id": "ecommerce",
+      "scene": "shop",
+      "icon": "cart-large-2-bold-duotone",
+      "title": "E-commerce",
+      "tagline": "Online stores that take real orders.",
+      "label": "Storefront",
+      "gets": [
+        "Catalogue, cart and checkout",
+        "Local payment methods",
+        "Order and delivery tracking"
+      ]
+    },
+    {
+      "id": "business",
+      "scene": "business",
+      "icon": "case-round-bold-duotone",
+      "title": "Business Software",
+      "tagline": "Tools that run your daily work.",
+      "label": "Stock levels",
+      "gets": [
+        "Customer and sales records",
+        "Live stock with low-stock alerts",
+        "Reports you can export"
+      ]
+    },
+    {
+      "id": "mvp",
+      "scene": "mvp",
+      "icon": "rocket-2-bold-duotone",
+      "title": "MVPs & Startups",
+      "tagline": "Your idea, live and testable fast.",
+      "label": "Idea to launch",
+      "gets": [
+        "Only the features that matter first",
+        "Built to grow into version two",
+        "Clear weekly progress updates"
+      ]
+    },
+    {
+      "id": "websites",
+      "scene": "web",
+      "icon": "window-frame-bold-duotone",
+      "title": "Websites",
+      "tagline": "Sites for businesses, schools and brands.",
+      "label": "Desktop + phone",
+      "gets": [
+        "Clean design that builds trust",
+        "Fast and easy on every phone",
+        "Easy for customers to find you"
+      ]
+    }
+  ],
+  "cta": {
+    "title": "Something else in mind?",
+    "text": "Tell me what you're trying to build. I'll reply with a plain-English plan.",
+    "button": "Contact me",
+    "key": "C"
   },
-  {
-    "number": "02",
-    "icon": "server",
-    "title": "API Design & Integration",
-    "description": "Well-documented REST APIs with secure auth, third-party integrations (payments, email, storage), and clean versioning."
-  },
-  {
-    "number": "03",
-    "icon": "refresh-cw",
-    "title": "Legacy System Modernization",
-    "description": "Migrating aging codebases to modern frameworks and typed languages without disrupting the business behind them."
-  },
-  {
-    "number": "04",
-    "icon": "life-buoy",
-    "title": "Ongoing Maintenance & Support",
-    "description": "Bug fixes, performance tuning, and incremental feature work to keep an existing product healthy and evolving."
+  "process": {
+    "title": "How I work",
+    "steps": [
+      {
+        "name": "Brief",
+        "when": "Day 1",
+        "text": "We talk through your goal, your users and what \"done\" looks like.",
+        "icon": "clipboard-list-bold-duotone"
+      },
+      {
+        "name": "Build",
+        "when": "Weekly",
+        "text": "I build in small steps and show you working screens as they come together.",
+        "icon": "code-square-bold-duotone"
+      },
+      {
+        "name": "Ship",
+        "when": "Launch day",
+        "text": "Testing, launch and handover, with nothing left for you to figure out.",
+        "icon": "rocket-2-bold-duotone"
+      },
+      {
+        "name": "Support",
+        "when": "After launch",
+        "text": "Bug fixes, speed tuning and new features, so the product keeps improving.",
+        "icon": "shield-check-bold-duotone"
+      }
+    ],
+    "mock": {
+      "briefUrl": "brief.md",
+      "buildUrl": "localhost:3000",
+      "liveUrl": "yourbrand.com",
+      "goalsTitle": "Project goals",
+      "goals": [
+        "More online orders",
+        "Customers across Dhaka",
+        "Done = checkout works"
+      ],
+      "buildLabel": "Building",
+      "liveLabel": "Live",
+      "version": "v1.1 · In progress",
+      "brand": "YourBrand",
+      "nav": [
+        "Shop",
+        "About",
+        "Contact"
+      ],
+      "heroTitle": "Everything for your build.",
+      "heroText": "Tools and hardware, delivered.",
+      "cta": "Shop now",
+      "products": [
+        {
+          "name": "Power drill",
+          "price": "৳4,200"
+        },
+        {
+          "name": "Tool set",
+          "price": "৳1,850"
+        },
+        {
+          "name": "Bench vise",
+          "price": "৳3,100"
+        }
+      ],
+      "annotations": {
+        "nav": "Navbar",
+        "hero": "Hero",
+        "grid": "Product grid",
+        "footer": "Footer"
+      },
+      "code": [
+        "<Hero />",
+        "<ProductGrid />",
+        "<Checkout />"
+      ],
+      "codeDone": "All tests pass",
+      "deploy": [
+        "Tests passed",
+        "Build in 1.2s",
+        "Deployed"
+      ],
+      "gauges": [
+        {
+          "label": "Speed",
+          "value": 98
+        },
+        {
+          "label": "SEO",
+          "value": 100
+        }
+      ],
+      "uptimeLabel": "Uptime",
+      "uptime": "99.9%",
+      "order": "New order · ৳4,200"
+    }
   }
-]
+}

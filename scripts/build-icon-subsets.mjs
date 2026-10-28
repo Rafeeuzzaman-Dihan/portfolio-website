@@ -1,5 +1,5 @@
 // Builds the offline icon subsets in app/assets/icons from the @iconify-json packages.
-// Run with `yarn icons` after adding an icon to content/expertise.json, content/skills.json or a component.
+// Run with `yarn icons` after adding an icon to content/expertise.json, content/skills.json, content/services.json or a component.
 import { readFileSync, writeFileSync } from 'node:fs'
 import { getIcons } from '@iconify/utils'
 
@@ -21,7 +21,11 @@ const LUCIDE = [
   'server', 'panels-top-left', 'database', 'rocket', 'external-link', 'code', 'refresh-cw', 'life-buoy', 'copy', 'check',
   'clock', 'calendar', 'map-pin', 'globe', 'monitor', 'arrow-right', 'arrow-up-right', 'lock', 'x'
 ]
-const SOLAR = ['monitor-smartphone-bold-duotone', 'server-square-bold-duotone', 'database-bold-duotone', 'rocket-2-bold-duotone', 'code-square-bold-duotone']
+const SOLAR = [
+  'monitor-smartphone-bold-duotone', 'server-square-bold-duotone', 'database-bold-duotone', 'rocket-2-bold-duotone', 'code-square-bold-duotone',
+  'monitor-bold-duotone', 'cart-large-2-bold-duotone', 'case-round-bold-duotone', 'window-frame-bold-duotone',
+  'clipboard-list-bold-duotone', 'shield-check-bold-duotone'
+]
 
 const logoSubset = getIcons(logos, LOGOS, true)
 // Paint a mark in one colour, including paths that ask for currentColor.
