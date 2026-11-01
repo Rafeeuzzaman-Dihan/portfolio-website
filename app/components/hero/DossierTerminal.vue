@@ -5,9 +5,9 @@ import type HoloKeyboard from './HoloKeyboard.vue'
 
 const { dossier } = profile
 
-const PASSPHRASE_LENGTH = 8
-const DECRYPT_MS = 750
-const LINE_STEP_MS = 150
+const PASSPHRASE_LENGTH = 6
+const DECRYPT_MS = 450
+const LINE_STEP_MS = 110
 const DECODE_MS = 450
 
 const keyboard = ref<InstanceType<typeof HoloKeyboard> | null>(null)
@@ -38,16 +38,16 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 const between = (min: number, max: number) => min + Math.random() * (max - min)
 
-// Delay before a keystroke, modelled on a fast (~80 WPM) typist: repeated keys roll
+// Delay before a keystroke, modelled on a very fast (~200 WPM) typist: repeated keys roll
 // quickly, a new word starts after a short beat, Shift combos cost a little reach,
 // and now and then the hand hesitates. A remembered passphrase goes in faster and evenly.
 function keyDelay(char: string, prev: string | undefined, masked: boolean) {
-  if (masked) return between(75, 125)
-  if (char === prev) return between(60, 90)
-  let ms = between(85, 150)
-  if (prev === ' ') ms += between(70, 150)
-  if (/[A-Z_@]/.test(char)) ms += between(60, 110)
-  if (Math.random() < 0.07) ms += between(150, 260)
+  if (masked) return between(30, 45)
+  if (char === prev) return between(25, 35)
+  let ms = between(30, 55)
+  if (prev === ' ') ms += between(25, 50)
+  if (/[A-Z_@]/.test(char)) ms += between(20, 40)
+  if (Math.random() < 0.06) ms += between(60, 100)
   return ms
 }
 
@@ -62,9 +62,9 @@ async function typeInto(target: Ref<string>, text: string, masked: boolean) {
     prev = char
   }
   // A glance over the line before hitting Enter.
-  await sleep(between(260, 380))
+  await sleep(between(100, 150))
   keyboard.value?.press('enter')
-  await sleep(140)
+  await sleep(100)
 }
 
 function decode(index: number) {
@@ -82,14 +82,14 @@ function decode(index: number) {
 }
 
 async function play() {
-  await sleep(500)
+  await sleep(200)
   lights.value = 1
   caretLine.value = 1
   await typeInto(command, dossier.command, false)
   if (!alive) return
 
   // The server asks for the passphrase; the reply takes a moment.
-  await sleep(between(300, 420))
+  await sleep(between(120, 170))
   lights.value = 2
   caretLine.value = 2
   await typeInto(passphrase, '•'.repeat(PASSPHRASE_LENGTH), true)
@@ -106,11 +106,18 @@ async function play() {
   lights.value = 3
   await keyboard.value?.sweep()
   keyboardGone.value = true
-  await sleep(350)
+  await sleep(150)
   if (!alive) return
 
   fileShown.value = true
   dossier.lines.forEach((_line, i) => setTimeout(() => decode(i), i * LINE_STEP_MS))
+}
+
+// Visitors who have seen enough can click the screen to jump straight to the file.
+function skip() {
+  if (!alive || fileShown.value && decoded.value.every(Boolean)) return
+  alive = false
+  showFinished()
 }
 
 function showFinished() {
@@ -137,7 +144,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <aside class="crt" aria-label="Operator dossier">
+  <aside class="crt" aria-label="Operator dossier" @click="skip">
     <!-- Screen readers get the file straight away; the animated screen below is decorative. -->
     <dl class="sr-only">
       <dt>Callsign</dt>
