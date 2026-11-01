@@ -1,5 +1,5 @@
 <template>
-  <div class="relative overflow-hidden py-20 sm:py-28">
+  <div class="relative overflow-hidden pt-4 pb-20 sm:pt-6 sm:pb-28">
     <div class="section-container relative">
       <SectionTitle text="Contact" />
 

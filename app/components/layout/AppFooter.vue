@@ -7,7 +7,7 @@ const navLinks = useNavLinks()
 
 <template>
   <footer class="band band-elevated band-seam" data-bg="grain" data-tone="dark">
-    <div class="section-container border-b border-(--color-border) pt-16 pb-14">
+    <div class="section-container border-b border-(--color-border) pt-6 pb-14">
       <TestimonialsCarousel />
     </div>
 

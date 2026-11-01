@@ -60,7 +60,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="relative py-20 sm:py-24">
+  <div class="relative pt-4 pb-20 sm:pt-6 sm:pb-24">
     <div class="section-container">
       <SectionTitle text="Experience" />
 

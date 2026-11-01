@@ -118,14 +118,11 @@ function openCase(index: number) {
 </script>
 
 <template>
-  <div class="relative overflow-hidden py-20 sm:py-24">
+  <div class="relative overflow-hidden pt-4 pb-20 sm:pt-6 sm:pb-24">
     <div :ref="el => target(el as Element | null)" class="section-container relative">
       <div class="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
         <div class="grid gap-4">
           <SectionTitle text="Projects" />
-          <p class="max-w-2xl text-(--color-text-muted)">
-            Things I've built for clients and for myself. Every one has a case study; the public ones are live too.
-          </p>
         </div>
         <span class="hidden items-center gap-2 font-hud text-sm font-semibold uppercase tracking-[0.14em] text-(--color-text-muted) lg:flex" aria-hidden="true">
           <span class="status-dot size-[7px]" :class="auto || introRunning ? 'bg-(--color-primary-light)' : 'bg-(--color-secondary)'" />
