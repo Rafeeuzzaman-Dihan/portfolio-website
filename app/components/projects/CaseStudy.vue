@@ -25,16 +25,33 @@ const timeline = computed(() => {
 
 let returnFocus: HTMLElement | null = null
 
+// Everything animating behind the panel holds still while it is open, so the slide has the frame budget to themselves.
+// This pauses the running animations through the Web Animations API (a CSS rule on every element forces a full style recalculation),
+// and it runs before the panel mounts, so the panel's own motion is not caught.
+let frozen: Animation[] = []
+
+function freezePage() {
+  frozen = document.getAnimations().filter(animation => animation.playState === 'running')
+  frozen.forEach(animation => animation.pause())
+}
+
+function thawPage() {
+  frozen.forEach(animation => animation.playState === 'paused' && animation.play())
+  frozen = []
+}
+
 // Opening: remember the trigger, lock page scroll, focus the close button and decode the title.
 // Switching to the next case scrolls back to the top and decodes again.
 watch(() => props.project, (project, previous) => {
   if (project && !previous) {
     returnFocus = document.activeElement as HTMLElement | null
     document.documentElement.style.overflow = 'hidden'
+    freezePage()
     nextTick(() => closeBtn.value?.focus({ preventScroll: true }))
   }
   if (!project && previous) {
     document.documentElement.style.overflow = ''
+    thawPage()
     returnFocus?.focus()
   }
   if (project) {
@@ -46,6 +63,7 @@ watch(() => props.project, (project, previous) => {
 
 onBeforeUnmount(() => {
   document.documentElement.style.overflow = ''
+  thawPage()
 })
 
 // Keep Tab inside the panel while it is open; Escape closes it.
@@ -72,7 +90,7 @@ function onKeydown(event: KeyboardEvent) {
 <template>
   <Teleport to="body">
     <Transition name="case" :duration="{ enter: 360, leave: 260 }">
-      <div v-if="project" class="fixed inset-0 z-[60] flex justify-end md:p-4 lg:p-6" @keydown="onKeydown">
+      <div v-if="project" class="case-root fixed inset-0 z-[60] flex justify-end md:p-4 lg:p-6" @keydown="onKeydown">
         <div class="backdrop absolute inset-0" aria-hidden="true" @click="emit('close')" />
 
         <div
@@ -82,7 +100,7 @@ function onKeydown(event: KeyboardEvent) {
           :aria-labelledby="`case-${project.slug}-title`"
           class="panel relative h-full w-full overflow-y-auto border-(--color-border) bg-(--color-bg) md:max-w-[760px] md:rounded-2xl md:border"
         >
-          <div class="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-(--color-border) bg-(--color-bg)/90 px-5 py-3.5 backdrop-blur sm:px-8">
+          <div class="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-(--color-border) bg-(--color-bg) px-5 py-3.5 sm:px-8">
             <span class="font-hud text-sm font-bold uppercase tracking-[0.18em] text-(--color-text-muted)">
               Case study <span class="text-(--color-primary-light)">· {{ counter }}</span>
             </span>
@@ -413,16 +431,13 @@ function onKeydown(event: KeyboardEvent) {
   font-size: 14px;
 }
 
-/* The panel slides in from the right over a dimmed, blurred page; its content rises in.
-   The dim, the blur and the slide share one clock and one curve, and nothing here fades by opacity: a blur inside a fading layer
-   cannot see the page behind it, so it used to pop in at the very end of the fade. */
+/* The panel slides in from the right over a dimmed page; its content rises in.
+   There is deliberately no backdrop blur: it re-blurred the whole page every frame and made opening feel laggy. */
 .backdrop {
-  background-color: color-mix(in srgb, black 55%, transparent);
-  -webkit-backdrop-filter: blur(8px) saturate(0.8);
-  backdrop-filter: blur(8px) saturate(0.8);
+  background-color: color-mix(in srgb, black 72%, transparent);
 }
 
-/* The blur radius is never animated (that lags and drifts from the slide); the backdrop layer itself fades, which fades dim and blur as one. */
+/* The dim layer fades in on its own. */
 .case-enter-active .backdrop {
   transition: opacity 0.28s ease-out;
 }
@@ -436,9 +451,9 @@ function onKeydown(event: KeyboardEvent) {
   opacity: 0;
 }
 
-/* Slide + pop: the card glides in from the right while it scales up from slightly small, with a soft settle. */
+/* Slide: the card glides in from the right with a soft settle. It only moves (no scale), which keeps the frame cheap. */
 .panel {
-  box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.7), 0 0 0 1px color-mix(in srgb, var(--color-primary) 18%, transparent);
+  box-shadow: 0 18px 48px -18px rgb(0 0 0 / 0.65), 0 0 0 1px color-mix(in srgb, var(--color-primary) 18%, transparent);
 }
 
 .case-enter-active .panel {
@@ -457,7 +472,7 @@ function onKeydown(event: KeyboardEvent) {
 .case-enter-from .panel,
 .case-leave-to .panel {
   opacity: 0;
-  transform: translate3d(9%, 0, 0) scale(0.95);
+  transform: translate3d(9%, 0, 0);
 }
 
 .content > * {

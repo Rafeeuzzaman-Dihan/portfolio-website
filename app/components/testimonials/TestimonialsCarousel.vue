@@ -46,9 +46,9 @@ onBeforeUnmount(() => clearTimeout(timer))
 <template>
   <div :ref="el => target(el as Element | null)" :style="{ '--note-ms': `${NOTE_MS}ms` }">
     <div class="flex items-center justify-between gap-4">
-      <span class="label flex items-center gap-2.5">
-        <span class="size-1.5 bg-(--color-primary)" aria-hidden="true" />Client notes
-      </span>
+      <h2 class="flex items-center gap-3 font-heading text-xl font-bold text-(--color-text) sm:text-2xl">
+        <span class="size-2.5 bg-(--color-primary)" aria-hidden="true" />Client notes
+      </h2>
       <span class="label"><b class="font-medium text-(--color-text)">{{ counter }}</b> / {{ pad(notes.length) }}</span>
     </div>
 
